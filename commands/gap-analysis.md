@@ -56,11 +56,12 @@ Compare these six dimensions. For each, read the relevant source files in **both
 
 ### Exclusions
 
-Flag these in the tracking file as "intentionally skipped" rather than fixing:
+Tell explorer agents about these exclusions upfront so they don't waste time reporting them. Flag these in the tracking file as "intentionally skipped" rather than fixing:
 
 - Test/demo pages that are prototype artifacts
 - Test files using a different test framework than this project
 - Mock data patterns if this project uses a real backend
+- Architectural differences that are intentional (e.g., client-side localStorage vs server actions, mock data vs real backend queries)
 
 ## Phase 3: Prioritize & Fix
 
@@ -70,7 +71,7 @@ Flag these in the tracking file as "intentionally skipped" rather than fixing:
 4. Cap at ~12 files per iteration. If more need changes, fix the highest priority ones and defer the rest.
 5. Adapt reference app patterns for this project's architecture (e.g., client-side patterns may need server-side equivalents, mock data may need real queries).
 
-**Constraints**: Follow this project's conventions (check CLAUDE.md if it exists). Do not modify database schema or migrations. Do not break existing tests.
+**Constraints**: Follow this project's conventions (check CLAUDE.md if it exists). Do not modify database schema or migrations. Do not break existing tests — when you change content/copy, proactively update any unit tests AND E2E tests that assert on the old text.
 
 ## Phase 4: Validate
 
@@ -81,6 +82,8 @@ npm run lint:fix 2>/dev/null || true
 npm run typecheck 2>/dev/null || true
 npm run test 2>/dev/null || true
 ```
+
+Also check for E2E tests that may assert on changed content (search E2E test files for old text you replaced). Update any stale assertions before pushing.
 
 If any check fails, fix the issue and re-run. Max 3 fix attempts per check. If still failing after 3 attempts, revert the problematic change and note it as deferred.
 
