@@ -1,0 +1,13 @@
+{
+  "name": "codebase-sweeps",
+  "description": "Autonomous iterative codebase improvement skills for gap analysis, test coverage, and security audits. Designed to run standalone or in Ralph Loops.",
+  "version": "1.0.0",
+  "author": {
+    "name": "neonwatty"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neonwatty/codebase-sweeps"
+  },
+  "license": "MIT"
+}
