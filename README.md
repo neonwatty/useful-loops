@@ -7,13 +7,14 @@ Designed to work with the [Ralph Loop](https://github.com/anthropics/claude-code
 ## Install
 
 ```bash
-/plugin install from github neonwatty/codebase-sweeps
+claude plugin marketplace add neonwatty/codebase-sweeps
+claude plugin install codebase-sweeps@codebase-sweeps
 ```
 
 Also install the Ralph Loop plugin if you want looping:
 
 ```bash
-/plugin install ralph-loop
+claude plugin install ralph-loop
 ```
 
 ## Commands
