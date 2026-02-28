@@ -86,6 +86,8 @@ npm run typecheck 2>/dev/null || true
 npm run test 2>/dev/null || true
 ```
 
+If any source files were modified (not just test files added), check for E2E tests that may assert on changed behavior and update stale assertions.
+
 Then check coverage (try common commands):
 
 ```bash

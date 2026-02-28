@@ -79,6 +79,8 @@ npm run typecheck 2>/dev/null || true
 npm run test 2>/dev/null || true
 ```
 
+Also check for E2E tests that may assert on changed behavior (especially auth flows, headers, redirects). Security fixes are particularly likely to break E2E tests — update stale assertions before pushing.
+
 If any check fails, fix the issue and re-run. Max 3 fix attempts per check. If still failing, revert the problematic change and note it as deferred.
 
 ## Phase 5: Update Tracking
