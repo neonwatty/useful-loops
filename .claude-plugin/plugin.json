@@ -5,9 +5,6 @@
   "author": {
     "name": "neonwatty"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/neonwatty/codebase-sweeps"
-  },
+  "repository": "https://github.com/neonwatty/codebase-sweeps",
   "license": "MIT"
 }
