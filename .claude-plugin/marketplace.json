@@ -1,0 +1,20 @@
+{
+  "name": "codebase-sweeps",
+  "description": "Autonomous iterative codebase improvement skills for gap analysis, test coverage, and security audits.",
+  "owner": {
+    "name": "neonwatty",
+    "github": "neonwatty"
+  },
+  "plugins": [
+    {
+      "name": "codebase-sweeps",
+      "source": {
+        "source": "github",
+        "repo": "neonwatty/codebase-sweeps"
+      },
+      "description": "Autonomous iterative codebase improvement skills for gap analysis, test coverage, and security audits. Designed to run standalone or in Ralph Loops.",
+      "version": "1.0.0",
+      "tags": ["code-quality", "testing", "security"]
+    }
+  ]
+}
