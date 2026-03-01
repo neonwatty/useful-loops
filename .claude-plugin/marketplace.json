@@ -12,9 +12,9 @@
         "source": "github",
         "repo": "neonwatty/codebase-sweeps"
       },
-      "description": "Autonomous iterative codebase improvement skills for gap analysis, test coverage, and security audits. Designed to run standalone or in Ralph Loops.",
+      "description": "Autonomous iterative codebase improvement skills for gap analysis, test coverage, security audits, and beta-readiness audits. Designed to run standalone or in Ralph Loops.",
       "version": "1.0.0",
-      "tags": ["code-quality", "testing", "security"]
+      "tags": ["code-quality", "testing", "security", "beta-readiness"]
     }
   ]
 }
