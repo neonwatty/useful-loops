@@ -1,6 +1,6 @@
 # codebase-sweeps
 
-A Claude Code plugin for autonomous, iterative codebase improvement. Runs gap analysis, test coverage, and security audits in loops that find issues, fix them, PR, pass CI, merge, and repeat.
+A Claude Code plugin for autonomous, iterative codebase improvement. Runs gap analysis, test coverage, security audits, and beta-readiness audits in loops that find issues, fix them, PR, pass CI, merge, and repeat.
 
 Designed to work with the [Ralph Loop](https://github.com/anthropics/claude-code/tree/main/plugins/ralph-loop) plugin for automated iteration.
 
@@ -26,6 +26,7 @@ claude plugin install ralph-loop
 | `/codebase-sweeps:gap-analysis <repo-url>` | Compare this app against a reference app, fix gaps |
 | `/codebase-sweeps:test-coverage [threshold]` | Find untested files, write tests (default: 80%) |
 | `/codebase-sweeps:security-audit` | Audit 1-2 OWASP categories, fix findings |
+| `/codebase-sweeps:beta-audit` | Holistic beta-readiness review across 5 dimensions |
 
 ### Looped (requires ralph-loop plugin)
 
@@ -34,6 +35,7 @@ claude plugin install ralph-loop
 | `/codebase-sweeps:gap-loop <repo-url> [--max N]` | Loop gap analysis until no gaps remain |
 | `/codebase-sweeps:test-loop [threshold] [--max N]` | Loop test coverage until threshold met |
 | `/codebase-sweeps:security-loop [--max N]` | Loop security audit until all categories clean |
+| `/codebase-sweeps:beta-audit-loop [--max N]` | Loop beta audit until no HIGH/MEDIUM code findings |
 
 Default max iterations: 10.
 
@@ -59,6 +61,8 @@ Each skill maintains a tracking file in `docs/plans/`:
 - `gap-tracking.md` — gap analysis iterations
 - `test-coverage-tracking.md` — test coverage iterations
 - `security-audit-tracking.md` — security audit iterations
+- `beta-audit-tracking.md` — beta audit iterations
+- `beta-manual-todos.md` — accumulating manual to-do checklist from beta audits
 
 These files are created automatically on first run and serve as inter-iteration memory.
 
@@ -109,6 +113,20 @@ OWASP-aligned audit covering 10 categories (1-2 per iteration):
 
 **Completion:** `NO_ISSUES` when all 10 categories audited with no HIGH/MEDIUM findings.
 
+### Beta Audit
+
+Holistic beta-readiness review using 5 parallel explorer agents:
+
+- Feature Completeness — incomplete flows, placeholder data, dead-end UX, compliance gaps
+- Error Handling & Edge Cases — missing loading/empty states, validation gaps, network failures
+- Polish & UX Quality — accessibility, styling consistency, mobile responsiveness, dead features
+- Ops & Infra Readiness — monitoring, email deliverability, production safety guards, rate limiting
+- Performance — redundant API calls, unparallelized queries, deferred loading opportunities
+
+Findings are classified by severity (HIGH/MEDIUM/LOW) and type (CODE/MANUAL). Code issues are fixed in the PR. Manual to-dos (service provider config, deployment settings, etc.) are collected into a separate `docs/plans/beta-manual-todos.md` checklist that accumulates across iterations.
+
+**Completion:** `BETA_READY` when no HIGH/MEDIUM code findings remain across all 5 dimensions.
+
 ## Examples
 
 ```bash
@@ -120,6 +138,12 @@ OWASP-aligned audit covering 10 categories (1-2 per iteration):
 
 # Loop security audit with defaults (10 iterations)
 /codebase-sweeps:security-loop
+
+# Single beta audit iteration
+/codebase-sweeps:beta-audit
+
+# Loop beta audit with max 8 iterations
+/codebase-sweeps:beta-audit-loop --max 8
 ```
 
 ## License
