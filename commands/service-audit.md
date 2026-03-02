@@ -1,10 +1,10 @@
 ---
-description: "One service sweep iteration: check Vercel, Supabase, PostHog, Sentry, and GitHub for issues, fix code problems, browser-assist manual fixes, validate, PR, CI, merge."
+description: "One service audit iteration: check Vercel, Supabase, PostHog, Sentry, and GitHub for issues, fix code problems, browser-assist manual fixes, validate, PR, CI, merge."
 ---
 
-# Service Sweep — Full Cycle
+# Service Audit — Full Cycle
 
-You are performing one complete service sweep iteration. Check the health of all detected services (Vercel, Supabase, PostHog, Sentry, GitHub) by inspecting the codebase, using CLIs/APIs, and checking browser dashboards. Fix code issues, walk the user through browser-assisted fixes, and collect manual to-dos. Report progress at each phase.
+You are performing one complete service audit iteration. Check the health of all detected services (Vercel, Supabase, PostHog, Sentry, GitHub) by inspecting the codebase, using CLIs/APIs, and checking browser dashboards. Fix code issues, walk the user through browser-assisted fixes, and collect manual to-dos. Report progress at each phase.
 
 ## Phase 1: Setup
 
@@ -18,20 +18,20 @@ You are performing one complete service sweep iteration. Check the health of all
    git checkout main && git pull origin main
    ```
 
-3. Read `docs/plans/service-sweep-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it:
+3. Read `docs/plans/service-audit-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it:
    ```markdown
-   # Service Sweep Tracking
+   # Service Audit Tracking
 
-   Automated service health sweep across Vercel, Supabase, PostHog, Sentry, and GitHub.
+   Automated service health audit across Vercel, Supabase, PostHog, Sentry, and GitHub.
 
    ---
 
    ## Iteration Log
    ```
 
-4. Read `docs/plans/service-sweep-manual-todos.md` to see any prior manual to-dos. If the file does not exist, create it:
+4. Read `docs/plans/service-audit-manual-todos.md` to see any prior manual to-dos. If the file does not exist, create it:
    ```markdown
-   # Service Sweep — Manual To-Dos
+   # Service Audit — Manual To-Dos
 
    Items that require human action in service dashboards, external tools, or account settings.
 
@@ -40,7 +40,7 @@ You are performing one complete service sweep iteration. Check the health of all
 
 5. Create an iteration branch:
    ```bash
-   git checkout -b service-sweep/iteration-<N>
+   git checkout -b service-audit/iteration-<N>
    ```
 
 6. **Detect which services this project uses.** Scan:
@@ -49,7 +49,7 @@ You are performing one complete service sweep iteration. Check the health of all
    - Config files: `vercel.json`, `sentry.client.config.*`, `sentry.server.config.*`, `posthog.*`
    - `.github/workflows/` directory for GitHub Actions
 
-   Build a service manifest listing which services are detected. Only sweep detected services. GitHub is always included if a `.git` directory exists.
+   Build a service manifest listing which services are detected. Only audit detected services. GitHub is always included if a `.git` directory exists.
 
 7. Review prior iterations in the tracking file and manual to-dos. Focus effort on uncovered ground — don't re-discover issues already fixed or already listed as manual to-dos.
 
@@ -157,7 +157,7 @@ Each finding must be classified by:
    - Take action (click, fill, submit) only after explicit user confirmation
    - Screenshot before and after for the tracking report
 
-   **Manual to-dos:** All items tagged MANUAL (any severity) — append to `docs/plans/service-sweep-manual-todos.md`
+   **Manual to-dos:** All items tagged MANUAL (any severity) — append to `docs/plans/service-audit-manual-todos.md`
 
 4. LOW items of any type are deferred — log them in the tracking file but do not fix this iteration
 5. **Never weaken existing security to fix something else**
@@ -196,7 +196,7 @@ pkill -f "vitest|jest" 2>/dev/null || true
 
 ## Phase 5: Update Tracking
 
-Append a new entry to `docs/plans/service-sweep-tracking.md`:
+Append a new entry to `docs/plans/service-audit-tracking.md`:
 
 ```markdown
 ### Iteration N (YYYY-MM-DD)
@@ -225,7 +225,7 @@ Append a new entry to `docs/plans/service-sweep-tracking.md`:
 - [ ] [Service] Description (severity: LOW, reason)
 ```
 
-Append new manual to-dos to `docs/plans/service-sweep-manual-todos.md`:
+Append new manual to-dos to `docs/plans/service-audit-manual-todos.md`:
 
 ```markdown
 ### From Iteration N (YYYY-MM-DD)
@@ -245,15 +245,15 @@ Do not remove or modify existing entries in the manual to-dos file — the user 
    ```
 2. Commit:
    ```bash
-   git commit -m "fix: service sweep iteration N — <brief summary of changes>"
+   git commit -m "fix: service audit iteration N — <brief summary of changes>"
    ```
 3. Push:
    ```bash
-   git push -u origin service-sweep/iteration-<N>
+   git push -u origin service-audit/iteration-<N>
    ```
 4. Create PR:
    ```bash
-   gh pr create --title "Service Sweep: Iteration N" --body "Automated service health sweep. See docs/plans/service-sweep-tracking.md for details."
+   gh pr create --title "Service Audit: Iteration N" --body "Automated service health audit. See docs/plans/service-audit-tracking.md for details."
    ```
 
 **If NO CRITICAL or HIGH code findings were found:** skip to Phase 8.
@@ -276,7 +276,7 @@ Do not remove or modify existing entries in the manual to-dos file — the user 
      ```bash
      gh run view <run-id> --log-failed
      # fix the issue
-     git add <specific files> && git commit -m "fix: address CI failure in service sweep iteration N"
+     git add <specific files> && git commit -m "fix: address CI failure in service audit iteration N"
      git push
      ```
 
