@@ -1,6 +1,6 @@
 # codebase-sweeps
 
-A Claude Code plugin for autonomous, iterative codebase improvement. Runs gap analysis, test coverage, security audits, beta-readiness audits, and service health sweeps in loops that find issues, fix them, PR, pass CI, merge, and repeat.
+A Claude Code plugin for autonomous, iterative codebase improvement. Runs gap analysis, test coverage, security audits, beta-readiness audits, and service health audits in loops that find issues, fix them, PR, pass CI, merge, and repeat.
 
 Designed to work with the [Ralph Loop](https://github.com/anthropics/claude-code/tree/main/plugins/ralph-loop) plugin for automated iteration.
 
@@ -27,7 +27,7 @@ claude plugin install ralph-loop
 | `/codebase-sweeps:test-coverage [threshold]` | Find untested files, write tests (default: 80%) |
 | `/codebase-sweeps:security-audit` | Audit 1-2 OWASP categories, fix findings |
 | `/codebase-sweeps:beta-audit` | Holistic beta-readiness review across 5 dimensions |
-| `/codebase-sweeps:service-sweep` | Sweep Vercel, Supabase, PostHog, Sentry, GitHub for issues |
+| `/codebase-sweeps:service-audit` | Audit Vercel, Supabase, PostHog, Sentry, GitHub for issues |
 
 ### Looped (requires ralph-loop plugin)
 
@@ -37,7 +37,7 @@ claude plugin install ralph-loop
 | `/codebase-sweeps:test-loop [threshold] [--max N]` | Loop test coverage until threshold met |
 | `/codebase-sweeps:security-loop [--max N]` | Loop security audit until all categories clean |
 | `/codebase-sweeps:beta-audit-loop [--max N]` | Loop beta audit until no HIGH/MEDIUM code findings |
-| `/codebase-sweeps:service-loop [--max N]` | Loop service sweep until no CRITICAL/HIGH findings |
+| `/codebase-sweeps:service-audit-loop [--max N]` | Loop service audit until no CRITICAL/HIGH findings |
 
 Default max iterations: 10.
 
@@ -65,8 +65,8 @@ Each skill maintains a tracking file in `docs/plans/`:
 - `security-audit-tracking.md` — security audit iterations
 - `beta-audit-tracking.md` — beta audit iterations
 - `beta-manual-todos.md` — accumulating manual to-do checklist from beta audits
-- `service-sweep-tracking.md` — service health sweep iterations
-- `service-sweep-manual-todos.md` — accumulating manual to-do checklist from service sweeps
+- `service-audit-tracking.md` — service health audit iterations
+- `service-audit-manual-todos.md` — accumulating manual to-do checklist from service audits
 
 These files are created automatically on first run and serve as inter-iteration memory.
 
@@ -131,7 +131,7 @@ Findings are classified by severity (HIGH/MEDIUM/LOW) and type (CODE/MANUAL). Co
 
 **Completion:** `BETA_READY` when no HIGH/MEDIUM code findings remain across all 5 dimensions.
 
-### Service Sweep
+### Service Audit
 
 Checks the health of your service stack (Vercel, Supabase, PostHog, Sentry, GitHub) using a combination of codebase inspection, CLIs/APIs, and browser dashboard checks. Auto-detects which services your project uses by scanning `package.json`, env files, and config files.
 
@@ -139,7 +139,7 @@ Findings are classified by severity (CRITICAL/HIGH/MEDIUM/LOW) and type:
 
 - **CODE** — auto-fixed in the codebase (SDK updates, config fixes, migration files)
 - **BROWSER** — fixed interactively via Claude-in-Chrome with user confirmation
-- **MANUAL** — collected into `docs/plans/service-sweep-manual-todos.md` for human action
+- **MANUAL** — collected into `docs/plans/service-audit-manual-todos.md` for human action
 
 **Services & checks:**
 
@@ -169,11 +169,11 @@ Findings are classified by severity (CRITICAL/HIGH/MEDIUM/LOW) and type:
 # Loop beta audit with max 8 iterations
 /codebase-sweeps:beta-audit-loop --max 8
 
-# Single service health sweep
-/codebase-sweeps:service-sweep
+# Single service health audit
+/codebase-sweeps:service-audit
 
-# Loop service sweep with max 5 iterations
-/codebase-sweeps:service-loop --max 5
+# Loop service audit with max 5 iterations
+/codebase-sweeps:service-audit-loop --max 5
 ```
 
 ## License
