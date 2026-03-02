@@ -1,6 +1,6 @@
 # codebase-sweeps
 
-A Claude Code plugin for autonomous, iterative codebase improvement. Runs gap analysis, test coverage, security audits, beta-readiness audits, and service health audits in loops that find issues, fix them, PR, pass CI, merge, and repeat.
+A Claude Code plugin for autonomous, iterative codebase improvement. Runs gap analysis, test coverage, security audits, beta-readiness audits, service health audits, and top-of-funnel marketing audits in loops that find issues, fix them, PR, pass CI, merge, and repeat.
 
 Designed to work with the [Ralph Loop](https://github.com/anthropics/claude-code/tree/main/plugins/ralph-loop) plugin for automated iteration.
 
@@ -28,6 +28,7 @@ claude plugin install ralph-loop
 | `/codebase-sweeps:security-audit` | Audit 1-2 OWASP categories, fix findings |
 | `/codebase-sweeps:beta-audit` | Holistic beta-readiness review across 5 dimensions |
 | `/codebase-sweeps:service-audit` | Audit Vercel, Supabase, PostHog, Sentry, GitHub for issues |
+| `/codebase-sweeps:funnel-audit` | Audit one top-of-funnel marketing category, fix issues |
 
 ### Looped (requires ralph-loop plugin)
 
@@ -38,6 +39,7 @@ claude plugin install ralph-loop
 | `/codebase-sweeps:security-loop [--max N]` | Loop security audit until all categories clean |
 | `/codebase-sweeps:beta-audit-loop [--max N]` | Loop beta audit until no HIGH/MEDIUM code findings |
 | `/codebase-sweeps:service-audit-loop [--max N]` | Loop service audit until no CRITICAL/HIGH findings |
+| `/codebase-sweeps:funnel-loop [--max N]` | Loop funnel audit until all marketing categories optimized |
 
 Default max iterations: 10.
 
@@ -67,6 +69,7 @@ Each skill maintains a tracking file in `docs/plans/`:
 - `beta-manual-todos.md` — accumulating manual to-do checklist from beta audits
 - `service-audit-tracking.md` — service health audit iterations
 - `service-audit-manual-todos.md` — accumulating manual to-do checklist from service audits
+- `funnel-audit-tracking.md` — funnel audit iterations
 
 These files are created automatically on first run and serve as inter-iteration memory.
 
@@ -151,6 +154,22 @@ Findings are classified by severity (CRITICAL/HIGH/MEDIUM/LOW) and type:
 
 **Completion:** `SERVICES_HEALTHY` when all detected services are swept with no CRITICAL/HIGH code findings remaining.
 
+### Funnel Audit
+
+Top-of-funnel marketing audit covering 7 categories (1 per iteration):
+
+1. CTAs & Conversion Points — CTA presence, copy, placement, contrast, mobile-friendliness
+2. Referral & Viral Mechanics — share functionality, invite flows, branding on shared content
+3. Email Capture & Lead Nurture — capture points, triggers, value props, cooldowns
+4. Onboarding & Activation — first-run experience, progress indicators, empty states, time-to-value
+5. SEO & Content Discoverability — meta tags, structured data, sitemaps, OG metadata, internal linking
+6. Demo-to-Signup Funnel — demo accessibility, feature gating, signup nudges, work preservation
+7. Shareable & Exportable Content — branding on exports, attribution, CTAs for share recipients
+
+Each category is checked against a built-in best-practices checklist. Findings are classified as HIGH (missing/broken conversion path), MEDIUM (suboptimal but functional), or LOW (nice-to-have polish). HIGH and MEDIUM findings are fixed; LOW are deferred.
+
+**Completion:** `FUNNEL_OPTIMIZED` when all 7 categories audited with no HIGH/MEDIUM findings.
+
 ## Examples
 
 ```bash
@@ -174,6 +193,12 @@ Findings are classified by severity (CRITICAL/HIGH/MEDIUM/LOW) and type:
 
 # Loop service audit with max 5 iterations
 /codebase-sweeps:service-audit-loop --max 5
+
+# Single funnel audit iteration
+/codebase-sweeps:funnel-audit
+
+# Loop funnel audit with max 8 iterations
+/codebase-sweeps:funnel-loop --max 8
 ```
 
 ## License
