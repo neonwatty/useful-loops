@@ -1,18 +1,22 @@
 ---
-description: "Loop funnel audit until all marketing categories optimized. Requires ralph-loop plugin."
-argument-hint: "[--max N]"
+description: "Run the next funnel-audit iteration interactively. Unlike other sweeps, funnel audits require human judgment for marketing decisions."
+argument-hint: ""
 ---
 
-# Funnel Audit Loop
+# Funnel Audit — Next Iteration
 
-Start a Ralph Loop that repeatedly audits top-of-funnel marketing until all 7 categories are covered and no HIGH or MEDIUM issues remain.
+The funnel audit is an **interactive** skill — it pauses at multiple checkpoints to discuss findings, copy, and feature decisions with you. It cannot run unattended in a Ralph Loop.
 
-Parse the arguments: extract an optional `--max N` for max iterations (default: 10).
-
-Now invoke the Ralph Loop skill with these parameters:
+To run the next iteration, invoke the funnel-audit skill directly:
 
 ```
-/ralph-loop "/codebase-sweeps:funnel-audit" --completion-promise "FUNNEL_OPTIMIZED" --max-iterations <N>
+/codebase-sweeps:funnel-audit
 ```
 
-Replace `<N>` with the max iterations (default 10).
+Each invocation walks through one marketing category collaboratively:
+1. **You choose** which category to audit
+2. **You review** the findings before any fixes happen
+3. **You approve** copy, feature decisions, and implementation approach
+4. **You confirm** before the PR is created and merged
+
+Run one iteration at a time. After each iteration, decide whether to continue with the next category or pause.
