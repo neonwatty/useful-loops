@@ -1,27 +1,55 @@
 # Funnel Audit — Design Document
 
 **Date:** 2026-03-02
-**Skill files:** `commands/funnel-audit.md` (single iteration) + `commands/funnel-loop.md` (loop wrapper)
+**Updated:** 2026-03-03 (v2 — interactive mode)
+**Skill files:** `commands/funnel-audit.md` (single iteration) + `commands/funnel-loop.md` (invocation helper)
 
 ## Purpose
 
-Iteratively audit and improve top-of-funnel marketing across a SaaS web app. Each iteration focuses on one marketing category, applies a built-in best-practices checklist, implements HIGH and MEDIUM fixes, and ships via PR.
+Iteratively audit and improve top-of-funnel marketing across a SaaS web app. Each iteration focuses on one marketing category, applies a built-in best-practices checklist, **discusses findings with the user**, implements user-approved fixes, and ships via PR.
+
+## Why Interactive?
+
+Unlike security audits or test coverage (where findings are objective), funnel/marketing decisions are inherently subjective:
+
+- **Copy and tone** depend on brand voice — only the user knows what sounds right
+- **Feature decisions** (add a referral system? email capture modal?) are product strategy choices
+- **Placement and layout** changes affect UX and require design judgment
+- **Severity classification** is debatable — what's "HIGH" for one app may be irrelevant for another
+
+Automated execution leads to generic, off-brand changes that the user ends up reverting. The interactive approach ensures every change reflects the user's actual product vision.
 
 ## Key Decisions
 
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
-| Scope | Comprehensive (CTAs, referral, email, onboarding, SEO, demo funnel, exports) | User wants full top-of-funnel coverage |
+| Scope | Comprehensive (CTAs, referral, email, onboarding, SEO, demo funnel, exports) | Full top-of-funnel coverage |
 | Output | Implement code changes, PR, merge | Matches existing sweeps pattern |
 | Categories per iteration | 1 | Deep focus, manageable scope within ~12 file cap |
 | Analysis method | Built-in checklist per category | No external reference app needed |
-| Severity model | HIGH/MEDIUM/LOW, fix HIGH+MEDIUM | Consistent with existing sweeps |
+| Severity model | HIGH/MEDIUM/LOW, fix user-approved items | User confirms severity and scope |
 | Specificity | Generic SaaS (not app-specific) | Reusable across projects |
-| Approach | Category-sequential | Fixed order through all categories, re-sweep for remaining findings |
-| Completion promise | `FUNNEL_OPTIMIZED` | All 7 categories swept, no HIGH/MEDIUM remaining |
+| Approach | User-directed | User chooses category order and approves every fix |
+| **Automation level** | **Interactive with checkpoints** | **Marketing decisions require human judgment** |
+| **Ralph Loop** | **Not supported** | **Cannot run unattended — user input required at every phase** |
+| Completion promise | `FUNNEL_OPTIMIZED` | All 7 categories reviewed with user, no HIGH/MEDIUM remaining |
 | Tracking file | `docs/plans/funnel-audit-tracking.md` | Consistent with other sweeps |
 
-## Categories (in sweep order)
+## User Checkpoints
+
+The skill pauses for user input at these points:
+
+| Phase | Checkpoint | What the user decides |
+|-------|------------|----------------------|
+| 1 — Setup | Category selection | Which category to audit this iteration |
+| 2 — Analyze | Findings review | Confirm, reject, or reclassify each finding |
+| 3 — Fix | Copy approval | Approve or rewrite CTA text, headlines, messaging |
+| 3 — Fix | Feature decisions | Whether to add new features (referral, email capture, etc.) |
+| 6 — Ship | PR creation | Review diff and approve before creating PR |
+| 7 — CI & Merge | Merge decision | Approve merge or leave PR open for review |
+| 8 — Signal | Continue? | Run another iteration or stop for today |
+
+## Categories (in default order)
 
 ### 1. CTAs & Conversion Points
 - Every public page has at least one clear CTA leading to signup/demo
@@ -84,87 +112,65 @@ Iteratively audit and improve top-of-funnel marketing across a SaaS web app. Eac
 - Share recipients see a clear CTA to try the app themselves
 - Export formats are optimized for their sharing context (social, email, print)
 
-## 8-Phase Lifecycle
+## 8-Phase Lifecycle (Interactive)
 
 ### Phase 1: Setup
 - Ensure on `main` with latest code
-- Read `docs/plans/funnel-audit-tracking.md` (create if doesn't exist with all 7 categories listed as "Not Started")
-- Calculate iteration number (N+1)
-- Determine next unaudited category (or first category with remaining HIGH/MEDIUM if all visited)
-- Create branch: `funnel-audit/iteration-<N>`
-- Review prior iterations to avoid re-fixing already-addressed items
+- Read tracking file (create if needed)
+- Calculate iteration number
+- **ASK USER** which category to audit (suggest next unaudited, let them override)
+- Create branch
 
 ### Phase 2: Analyze
-- Glob and read all files relevant to the current category
-- Apply the category's built-in checklist
-- List ALL findings with severity (HIGH/MEDIUM/LOW)
-- For each finding, identify the specific file(s) and what needs to change
-- HIGH = missing/broken conversion path
-- MEDIUM = suboptimal but functional
-- LOW = nice-to-have polish
+- Glob and read all relevant files exhaustively
+- Apply category checklist
+- Classify findings (HIGH/MEDIUM/LOW)
+- **ASK USER** to review findings — they may reject, reclassify, or add items
 
 ### Phase 3: Fix
-- Fix all HIGH and MEDIUM findings
-- Cap at ~12 files modified per iteration
-- If more than 12 files need changes, fix highest-severity first and defer the rest
-- Write clean, idiomatic code matching the target app's existing patterns
+- **ASK USER** to approve proposed copy/messaging before writing it
+- **ASK USER** before implementing net-new features (referral system, email capture, etc.)
+- Implement only user-approved fixes
+- Match target app's code conventions
+- Cap at ~12 files modified
 
 ### Phase 4: Validate
-- Run project quality checks: `lint:fix`, `typecheck`, `test`
-- Check that no existing functionality is broken
-- Max 3 fix attempts per failing check; revert and defer if still failing
+- Run lint, typecheck, tests (automated — no user input needed)
+- Fix failures or revert and defer
 
 ### Phase 5: Update Tracking
-- Append iteration entry to `docs/plans/funnel-audit-tracking.md`:
-
-```markdown
-## Iteration N — YYYY-MM-DD
-**Category:** <category name>
-**Findings:** X total (Y HIGH, Z MEDIUM, W LOW)
-
-### Fixed
-- [HIGH] Description of fix
-- [MEDIUM] Description of fix
-
-### Deferred
-- [LOW] Description of deferred item
-
-### Categories Remaining
-- Category A
-- Category B
-```
-
-- Update category status (Completed / Partial — N HIGH/MEDIUM remaining)
+- Append iteration entry with fixed, deferred, and **user-rejected** items
+- Update category status
 
 ### Phase 6: Ship
-- Only ship if changes were made
-- Stage specific files (NEVER `git add -A` or `git add .`)
-- Commit: `fix: funnel-audit: <category> improvements from iteration N`
-- Push to iteration branch
-- Create PR with findings summary
+- **ASK USER** before creating PR (offer to show diff first)
+- Stage, commit, push, create PR
 
 ### Phase 7: CI & Merge
-- Poll CI every 45 seconds
-- On success: squash-merge, delete branch
-- On failure: read logs, fix, push, re-poll (max 3 attempts)
+- Poll CI
+- **ASK USER** before merging (or let them review on GitHub)
+- On failure: fix and re-poll
 
 ### Phase 8: Signal
-- If uncompleted categories remain OR any completed category has HIGH/MEDIUM findings → exit normally
-- If all 7 categories swept AND no HIGH/MEDIUM findings → emit `<promise>FUNNEL_OPTIMIZED</promise>`
+- If all categories reviewed and no HIGH/MEDIUM remaining → emit `FUNNEL_OPTIMIZED`
+- Otherwise summarize what remains and **ASK USER** if they want another iteration
 
 ## File Structure
 
 ```
 commands/
-├── funnel-audit.md      # Single-iteration skill (~180 lines)
-├── funnel-loop.md       # Ralph Loop wrapper (~19 lines)
+├── funnel-audit.md      # Single-iteration interactive skill
+├── funnel-loop.md       # Invocation helper (no Ralph Loop — interactive)
 ```
 
-## Loop Wrapper
+## Differences from Other Sweeps
 
-`funnel-loop.md` invokes:
-```
-/ralph-loop "/codebase-sweeps:funnel-audit" --completion-promise "FUNNEL_OPTIMIZED" --max-iterations <N>
-```
-
-Default max iterations: 10.
+| Aspect | Security/Test/Gap/Beta | Funnel |
+|--------|----------------------|--------|
+| Automation level | Fully automated (Ralph Loop) | Interactive (user checkpoints) |
+| Decision authority | Skill decides what to fix | User decides what to fix |
+| Copy/messaging | N/A | User approves all copy |
+| New features | Auto-implement if < 50 lines | User decides whether to add |
+| Findings | Objective (vulnerability exists or not) | Subjective (user may disagree) |
+| Loop wrapper | Ralph Loop | Manual re-invocation |
+| Rejected findings | N/A | Tracked as "user-rejected" |
