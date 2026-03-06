@@ -201,6 +201,7 @@ Iteratively improves a document in-place by applying a user-provided analysis pr
 
 **Completion:** `DOC_REFINED` when no improvements are found at any severity level.
 
+
 ## Examples
 
 ```bash
