@@ -19,9 +19,9 @@ Repeat Phases 1-4 for up to N iterations. Stop early if Phase 2 finds zero impro
 
 ## Phase 1: Read
 
-1. Compact context to free up space for this iteration:
+1. Clear context to free up space for this iteration:
    ```
-   /compact
+   /clear
    ```
 
 2. Read the plan file at `<PLAN_FILE>`. If the file does not exist, stop and tell the user.
