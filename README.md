@@ -43,6 +43,15 @@ claude plugin install ralph-loop
 
 Default max iterations: 10.
 
+### Self-Contained
+
+| Command | Description |
+|---------|-------------|
+| `/codebase-sweeps:plan-refine "<PROMPT>" <PLAN_FILE> [--max N]` | Iteratively refine a plan document using a prompt-driven analysis loop |
+| `/codebase-sweeps:doc-refine "<PROMPT>" <DOC_FILE> [--max N]` | Iteratively refine a document using a prompt-driven analysis loop |
+
+Default max iterations: 5. No Ralph Loop dependency.
+
 ## How It Works
 
 Each skill follows an 8-phase lifecycle per iteration:
@@ -70,6 +79,8 @@ Each skill maintains a tracking file in `docs/plans/`:
 - `service-audit-tracking.md` — service health audit iterations
 - `service-audit-manual-todos.md` — accumulating manual to-do checklist from service audits
 - `funnel-audit-tracking.md` — funnel audit iterations
+- `plan-refine-tracking.md` — plan refinement iterations
+- `doc-refine-tracking.md` — document refinement iterations
 
 These files are created automatically on first run and serve as inter-iteration memory.
 
@@ -170,6 +181,26 @@ Each category is checked against a built-in best-practices checklist. Findings a
 
 **Completion:** `FUNNEL_OPTIMIZED` when all 7 categories audited with no HIGH/MEDIUM findings.
 
+### Plan Refine
+
+Iteratively improves a plan document in-place by applying a user-provided analysis prompt. Each iteration reads the plan, identifies improvements (classified HIGH/MEDIUM/LOW), applies all changes directly, and tracks what was changed. Runs as a self-contained loop — no Ralph Loop dependency, no git branching or PRs.
+
+- Prompt-driven: analysis focus is entirely controlled by the user's prompt
+- In-place editing: changes the plan file directly, no branches or PRs
+- Tracked: maintains iteration log in `docs/plans/plan-refine-tracking.md`
+
+**Completion:** `PLAN_REFINED` when no improvements are found at any severity level.
+
+### Doc Refine
+
+Iteratively improves a document in-place by applying a user-provided analysis prompt. Same self-contained loop as Plan Refine but with document-oriented severity definitions focused on readability, tone, audience-awareness, and comprehension rather than structural completeness.
+
+- Prompt-driven: analysis focus is entirely controlled by the user's prompt
+- Voice-preserving: edits improve readability without changing the document's intent or personality
+- Tracked: maintains iteration log in `docs/plans/doc-refine-tracking.md`
+
+**Completion:** `DOC_REFINED` when no improvements are found at any severity level.
+
 ## Examples
 
 ```bash
@@ -199,6 +230,12 @@ Each category is checked against a built-in best-practices checklist. Findings a
 
 # Loop funnel audit with max 8 iterations
 /codebase-sweeps:funnel-loop --max 8
+
+# Iteratively refine a plan document
+/codebase-sweeps:plan-refine "examine for gaps in error handling" docs/plans/architecture.md --max 3
+
+# Iteratively refine a document for clarity
+/codebase-sweeps:doc-refine "improve readability for non-technical audience" docs/user-guide.md
 ```
 
 ## License
