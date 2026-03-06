@@ -10,7 +10,7 @@ The funnel audit is an **interactive** skill — it pauses at multiple checkpoin
 To run the next iteration, invoke the funnel-audit skill directly:
 
 ```
-/codebase-sweeps:funnel-audit
+/useful-loops:funnel-audit
 ```
 
 Each invocation walks through one marketing category collaboratively:

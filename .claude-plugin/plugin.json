@@ -1,10 +1,10 @@
 {
-  "name": "codebase-sweeps",
+  "name": "useful-loops",
   "description": "Autonomous iterative codebase improvement skills for gap analysis, test coverage, security audits, beta-readiness audits, and service health audits. Designed to run standalone or in Ralph Loops.",
   "version": "1.0.0",
   "author": {
     "name": "neonwatty"
   },
-  "repository": "https://github.com/neonwatty/codebase-sweeps",
+  "repository": "https://github.com/neonwatty/useful-loops",
   "license": "MIT"
 }

@@ -12,7 +12,7 @@ Parse the arguments: extract an optional `--max N` for max iterations (default: 
 Now invoke the Ralph Loop skill with these parameters:
 
 ```
-/ralph-loop "/codebase-sweeps:security-audit" --completion-promise "NO_ISSUES" --max-iterations <N>
+/ralph-loop "/useful-loops:security-audit" --completion-promise "NO_ISSUES" --max-iterations <N>
 ```
 
 Replace `<N>` with the max iterations (default 10).

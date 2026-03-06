@@ -5,12 +5,12 @@
 
 ## Overview
 
-A self-contained, iterative skill that improves a plan document in-place according to a user-provided prompt. Unlike other codebase-sweeps skills, this skill does not touch code, create branches, open PRs, or run CI. It operates purely on plan files.
+A self-contained, iterative skill that improves a plan document in-place according to a user-provided prompt. Unlike other useful-loops skills, this skill does not touch code, create branches, open PRs, or run CI. It operates purely on plan files.
 
 ## Invocation
 
 ```
-/codebase-sweeps:plan-refine "<PROMPT>" <PLAN_FILE> [--max N]
+/useful-loops:plan-refine "<PROMPT>" <PLAN_FILE> [--max N]
 ```
 
 **Arguments:**
@@ -20,9 +20,9 @@ A self-contained, iterative skill that improves a plan document in-place accordi
 
 **Examples:**
 ```
-/codebase-sweeps:plan-refine "examine for gaps in error handling" docs/plans/architecture.md
-/codebase-sweeps:plan-refine "strengthen the testing strategy" docs/plans/launch-plan.md --max 3
-/codebase-sweeps:plan-refine "check for missing edge cases" docs/plans/api-design.md --max 10
+/useful-loops:plan-refine "examine for gaps in error handling" docs/plans/architecture.md
+/useful-loops:plan-refine "strengthen the testing strategy" docs/plans/launch-plan.md --max 3
+/useful-loops:plan-refine "check for missing edge cases" docs/plans/api-design.md --max 10
 ```
 
 ## Architecture
