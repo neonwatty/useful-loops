@@ -1,4 +1,4 @@
-# codebase-sweeps
+# useful-loops
 
 A Claude Code plugin for autonomous, iterative codebase improvement. Runs gap analysis, test coverage, security audits, beta-readiness audits, service health audits, and top-of-funnel marketing audits in loops that find issues, fix them, PR, pass CI, merge, and repeat.
 
@@ -7,8 +7,8 @@ Designed to work with the [Ralph Loop](https://github.com/anthropics/claude-code
 ## Install
 
 ```bash
-claude plugin marketplace add neonwatty/codebase-sweeps
-claude plugin install codebase-sweeps@codebase-sweeps
+claude plugin marketplace add neonwatty/useful-loops
+claude plugin install useful-loops@useful-loops
 ```
 
 Also install the Ralph Loop plugin if you want looping:
@@ -23,23 +23,23 @@ claude plugin install ralph-loop
 
 | Command | Description |
 |---------|-------------|
-| `/codebase-sweeps:gap-analysis <repo-url>` | Compare this app against a reference app, fix gaps |
-| `/codebase-sweeps:test-coverage [threshold]` | Find untested files, write tests (default: 80%) |
-| `/codebase-sweeps:security-audit` | Audit 1-2 OWASP categories, fix findings |
-| `/codebase-sweeps:beta-audit` | Holistic beta-readiness review across 5 dimensions |
-| `/codebase-sweeps:service-audit` | Audit Vercel, Supabase, PostHog, Sentry, GitHub for issues |
-| `/codebase-sweeps:funnel-audit` | Audit one top-of-funnel marketing category, fix issues |
+| `/useful-loops:gap-analysis <repo-url>` | Compare this app against a reference app, fix gaps |
+| `/useful-loops:test-coverage [threshold]` | Find untested files, write tests (default: 80%) |
+| `/useful-loops:security-audit` | Audit 1-2 OWASP categories, fix findings |
+| `/useful-loops:beta-audit` | Holistic beta-readiness review across 5 dimensions |
+| `/useful-loops:service-audit` | Audit Vercel, Supabase, PostHog, Sentry, GitHub for issues |
+| `/useful-loops:funnel-audit` | Audit one top-of-funnel marketing category, fix issues |
 
 ### Looped (requires ralph-loop plugin)
 
 | Command | Description |
 |---------|-------------|
-| `/codebase-sweeps:gap-loop <repo-url> [--max N]` | Loop gap analysis until no gaps remain |
-| `/codebase-sweeps:test-loop [threshold] [--max N]` | Loop test coverage until threshold met |
-| `/codebase-sweeps:security-loop [--max N]` | Loop security audit until all categories clean |
-| `/codebase-sweeps:beta-audit-loop [--max N]` | Loop beta audit until no HIGH/MEDIUM code findings |
-| `/codebase-sweeps:service-audit-loop [--max N]` | Loop service audit until no CRITICAL/HIGH findings |
-| `/codebase-sweeps:funnel-loop [--max N]` | Loop funnel audit until all marketing categories optimized |
+| `/useful-loops:gap-loop <repo-url> [--max N]` | Loop gap analysis until no gaps remain |
+| `/useful-loops:test-loop [threshold] [--max N]` | Loop test coverage until threshold met |
+| `/useful-loops:security-loop [--max N]` | Loop security audit until all categories clean |
+| `/useful-loops:beta-audit-loop [--max N]` | Loop beta audit until no HIGH/MEDIUM code findings |
+| `/useful-loops:service-audit-loop [--max N]` | Loop service audit until no CRITICAL/HIGH findings |
+| `/useful-loops:funnel-loop [--max N]` | Loop funnel audit until all marketing categories optimized |
 
 Default max iterations: 10.
 
@@ -47,8 +47,8 @@ Default max iterations: 10.
 
 | Command | Description |
 |---------|-------------|
-| `/codebase-sweeps:plan-refine "<PROMPT>" <PLAN_FILE> [--max N]` | Iteratively refine a plan document using a prompt-driven analysis loop |
-| `/codebase-sweeps:doc-refine "<PROMPT>" <DOC_FILE> [--max N]` | Iteratively refine a document using a prompt-driven analysis loop |
+| `/useful-loops:plan-refine "<PROMPT>" <PLAN_FILE> [--max N]` | Iteratively refine a plan document using a prompt-driven analysis loop |
+| `/useful-loops:doc-refine "<PROMPT>" <DOC_FILE> [--max N]` | Iteratively refine a document using a prompt-driven analysis loop |
 
 Default max iterations: 5. No Ralph Loop dependency.
 
@@ -206,37 +206,37 @@ Iteratively improves a document in-place by applying a user-provided analysis pr
 
 ```bash
 # Single gap analysis iteration against a reference app
-/codebase-sweeps:gap-analysis https://github.com/org/reference-app
+/useful-loops:gap-analysis https://github.com/org/reference-app
 
 # Loop test coverage to 90% with max 15 iterations
-/codebase-sweeps:test-loop 90 --max 15
+/useful-loops:test-loop 90 --max 15
 
 # Loop security audit with defaults (10 iterations)
-/codebase-sweeps:security-loop
+/useful-loops:security-loop
 
 # Single beta audit iteration
-/codebase-sweeps:beta-audit
+/useful-loops:beta-audit
 
 # Loop beta audit with max 8 iterations
-/codebase-sweeps:beta-audit-loop --max 8
+/useful-loops:beta-audit-loop --max 8
 
 # Single service health audit
-/codebase-sweeps:service-audit
+/useful-loops:service-audit
 
 # Loop service audit with max 5 iterations
-/codebase-sweeps:service-audit-loop --max 5
+/useful-loops:service-audit-loop --max 5
 
 # Single funnel audit iteration
-/codebase-sweeps:funnel-audit
+/useful-loops:funnel-audit
 
 # Loop funnel audit with max 8 iterations
-/codebase-sweeps:funnel-loop --max 8
+/useful-loops:funnel-loop --max 8
 
 # Iteratively refine a plan document
-/codebase-sweeps:plan-refine "examine for gaps in error handling" docs/plans/architecture.md --max 3
+/useful-loops:plan-refine "examine for gaps in error handling" docs/plans/architecture.md --max 3
 
 # Iteratively refine a document for clarity
-/codebase-sweeps:doc-refine "improve readability for non-technical audience" docs/user-guide.md
+/useful-loops:doc-refine "improve readability for non-technical audience" docs/user-guide.md
 ```
 
 ## License

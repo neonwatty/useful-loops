@@ -12,7 +12,7 @@ Parse the arguments: extract an optional coverage threshold (default: 80) and an
 Now invoke the Ralph Loop skill with these parameters:
 
 ```
-/ralph-loop "/codebase-sweeps:test-coverage <THRESHOLD>" --completion-promise "FULL_COVERAGE" --max-iterations <N>
+/ralph-loop "/useful-loops:test-coverage <THRESHOLD>" --completion-promise "FULL_COVERAGE" --max-iterations <N>
 ```
 
 Replace `<THRESHOLD>` with the coverage percentage (default 80), and `<N>` with the max iterations (default 10).

@@ -10,7 +10,7 @@ A self-contained, iterative skill that improves a document in-place according to
 ## Invocation
 
 ```
-/codebase-sweeps:doc-refine "<PROMPT>" <DOC_FILE> [--max N]
+/useful-loops:doc-refine "<PROMPT>" <DOC_FILE> [--max N]
 ```
 
 **Arguments:**
@@ -20,9 +20,9 @@ A self-contained, iterative skill that improves a document in-place according to
 
 **Examples:**
 ```
-/codebase-sweeps:doc-refine "improve readability for non-technical audience" docs/user-guide.md
-/codebase-sweeps:doc-refine "tighten the prose and remove redundancy" README.md --max 3
-/codebase-sweeps:doc-refine "ensure consistent tone and fix unclear sections" docs/api-reference.md --max 8
+/useful-loops:doc-refine "improve readability for non-technical audience" docs/user-guide.md
+/useful-loops:doc-refine "tighten the prose and remove redundancy" README.md --max 3
+/useful-loops:doc-refine "ensure consistent tone and fix unclear sections" docs/api-reference.md --max 8
 ```
 
 ## Architecture
