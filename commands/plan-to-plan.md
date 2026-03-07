@@ -1,21 +1,23 @@
 ---
 description: "Iteratively compare a derived plan against its source plan and close all gaps until the derived plan fully covers the source."
-argument-hint: "SOURCE_PLAN TARGET_PLAN [--max N]"
+argument-hint: "SOURCE_PLAN TARGET [--max N]"
 ---
 
 # Plan to Plan
 
 You are iteratively comparing a target plan against a source plan, identifying gaps, and closing them. The source plan is the source of truth. The target plan is a transformation of the source — it may change abstraction level, focus, or format (e.g., PRD → screen plan, screen plan → technical spec, technical spec → implementation plan), but it must faithfully cover everything in the source. Each iteration deeply reads both documents, performs a thorough gap analysis, and fixes what's missing in the target. Report progress at each phase.
 
-Parse the arguments: extract the SOURCE_PLAN path (the upstream plan — the source of truth), the TARGET_PLAN path (the derived plan to refine), and an optional `--max N` for max iterations (default: 5). Both SOURCE_PLAN and TARGET_PLAN are required.
+Parse the arguments: extract the SOURCE_PLAN path (the upstream plan — the source of truth), the TARGET path (the derived plan to refine — either a single `.md` file or a directory of `.md` files), and an optional `--max N` for max iterations (default: 5). Both SOURCE_PLAN and TARGET are required.
 
 **Source plan:** `<SOURCE_PLAN>`
-**Target plan:** `<TARGET_PLAN>`
+**Target:** `<TARGET>`
 **Max iterations:** `<N>`
 
-**Prerequisite check:** If either the source plan or the target plan does not exist, stop immediately and tell the user: "Both the source plan and the target plan must already exist before running this skill. Please create the target plan first, then re-run." Do not create either artifact.
+**Prerequisite check:** If either the source plan or the target file/directory does not exist, stop immediately and tell the user: "Both the source plan and the target must already exist before running this skill. Please create the target first, then re-run." Do not create either artifact.
 
-**In-place editing only:** All changes are made directly to the target plan file. Do not create new files or restructure the document's location.
+**Target format:** The target can be either:
+- **A single file** (e.g., `screen-plan.md`) — all edits go to that file
+- **A directory** (e.g., `screen-plan/`) — contains multiple `.md` files organized by topic (e.g., `user-screens.md`, `admin-screens.md`, `api-endpoints.md`). Edits go to the appropriate existing file. New `.md` files may be created inside the directory if a gap naturally belongs in a separate file, but do not create subdirectories.
 
 Repeat Phases 1-5 for up to N iterations. Stop early if Phase 3 finds zero gaps — output the completion promise and stop entirely (do not loop back).
 
@@ -33,7 +35,7 @@ Repeat Phases 1-5 for up to N iterations. Stop early if Phase 3 finds zero gaps 
    # Plan to Plan — Tracking
 
    **Source plan:** <path>
-   **Target plan:** <path>
+   **Target:** <path> (file / directory)
 
    ---
 
@@ -48,11 +50,13 @@ Repeat Phases 1-5 for up to N iterations. Stop early if Phase 3 finds zero gaps 
    - Organize findings into a structured inventory, grouped by section or theme
    - Note the level of abstraction and intent of each item (what is the source trying to specify?)
 
-5. **Deep-read the target plan.** Use a second explorer agent (in parallel with step 4) to thoroughly read and understand the target plan. The agent should:
-   - Read the entire target plan file
+5. **Deep-read the target.** Use a second explorer agent (in parallel with step 4) to thoroughly read and understand the target. The agent should:
+   - If `<TARGET>` is a single file, read the entire file
+   - If `<TARGET>` is a directory, read every `.md` file in the directory and understand how the content is organized across files
    - Extract every concrete item the target describes, at whatever level of abstraction the target operates
-   - Organize findings into a structured inventory, grouped by section or theme
+   - Organize findings into a structured inventory, grouped by section or theme (and by file, if a directory)
    - Note the transformation approach: how does the target translate source concepts into its own domain? (e.g., a PRD's "user profile management" might become specific screens, components, and interactions in a screen plan)
+   - If a directory, note the organizational scheme — how are topics split across files? This matters for knowing where to place new content
 
 Both agents should return detailed, structured inventories — not summaries. The gap analysis in Phase 3 depends on having complete information from both sides.
 
@@ -157,19 +161,25 @@ Only ask about genuinely ambiguous items. If the gap is clearly a missing item t
 
 ### Fix
 
-Apply gap fixes directly to the target plan file at `<TARGET_PLAN>`. Prioritize HIGH findings first, then MEDIUM, then LOW. Each edit should be surgical: add what's missing, correct what's wrong, and deepen what's shallow — without disrupting sections that are already good.
+Apply gap fixes to the target. Prioritize HIGH findings first, then MEDIUM, then LOW. Each edit should be surgical: add what's missing, correct what's wrong, and deepen what's shallow — without disrupting sections that are already good.
+
+**If target is a single file:** edit `<TARGET>` directly in place.
+
+**If target is a directory:** place each fix in the most appropriate existing file based on topic. If a gap doesn't fit naturally into any existing file, create a new `.md` file in the directory following the existing naming convention. Do not create subdirectories.
 
 Guidelines:
-- **Preserve the target's voice and structure** — add content that fits naturally into the existing document
+- **Preserve the target's voice and structure** — add content that fits naturally into the existing document(s)
 - **Match the target's level of abstraction** — don't paste source-level language into a target that operates at a different level
 - **Add, don't duplicate** — if the target already partially covers something, extend that section rather than creating a new one
 - **Maintain internal consistency** — new additions should use the same terminology, formatting, and structure as the rest of the target
+- **Respect the directory organization** — if the target splits user-facing vs admin content into separate files, new user-facing content goes in the user file, not the admin file
 
-After all edits are applied, re-read the target plan to verify:
-- The document flows coherently
+After all edits are applied, re-read the changed files to verify:
+- Each document flows coherently
 - New additions integrate naturally with existing content
 - No contradictions were introduced
 - Formatting and structure are consistent throughout
+- If a directory, cross-file references are accurate and no content is duplicated across files
 
 ## Phase 5: Track
 
