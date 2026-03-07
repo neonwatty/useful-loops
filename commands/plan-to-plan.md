@@ -1,0 +1,211 @@
+---
+description: "Iteratively compare a derived plan against its source plan and close all gaps until the derived plan fully covers the source."
+argument-hint: "SOURCE_PLAN TARGET_PLAN [--max N]"
+---
+
+# Plan to Plan
+
+You are iteratively comparing a target plan against a source plan, identifying gaps, and closing them. The source plan is the source of truth. The target plan is a transformation of the source — it may change abstraction level, focus, or format (e.g., PRD → screen plan, screen plan → technical spec, technical spec → implementation plan), but it must faithfully cover everything in the source. Each iteration deeply reads both documents, performs a thorough gap analysis, and fixes what's missing in the target. Report progress at each phase.
+
+Parse the arguments: extract the SOURCE_PLAN path (the upstream plan — the source of truth), the TARGET_PLAN path (the derived plan to refine), and an optional `--max N` for max iterations (default: 5). Both SOURCE_PLAN and TARGET_PLAN are required.
+
+**Source plan:** `<SOURCE_PLAN>`
+**Target plan:** `<TARGET_PLAN>`
+**Max iterations:** `<N>`
+
+**Prerequisite check:** If either the source plan or the target plan does not exist, stop immediately and tell the user: "Both the source plan and the target plan must already exist before running this skill. Please create the target plan first, then re-run." Do not create either artifact.
+
+**In-place editing only:** All changes are made directly to the target plan file. Do not create new files or restructure the document's location.
+
+Repeat Phases 1-5 for up to N iterations. Stop early if Phase 3 finds zero gaps — output the completion promise and stop entirely (do not loop back).
+
+---
+
+## Phase 1: Read & Understand
+
+1. Clear context to free up space for this iteration:
+   ```
+   /clear
+   ```
+
+2. Read `docs/plans/plan-to-plan-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it (run `mkdir -p docs/plans` first if the directory does not exist):
+   ```markdown
+   # Plan to Plan — Tracking
+
+   **Source plan:** <path>
+   **Target plan:** <path>
+
+   ---
+
+   ## Iteration Log
+   ```
+
+3. If this is iteration 2 or later, review the prior iteration entries in the tracking file. Understand what was already changed so you do not re-tread the same ground or revert prior improvements.
+
+4. **Deep-read the source plan.** Use an explorer agent to thoroughly read and understand the source plan. The agent should:
+   - Read the entire source plan file
+   - Extract every concrete item: requirements, features, user stories, goals, constraints, flows, data models, acceptance criteria, edge cases — whatever the source plan contains
+   - Organize findings into a structured inventory, grouped by section or theme
+   - Note the level of abstraction and intent of each item (what is the source trying to specify?)
+
+5. **Deep-read the target plan.** Use a second explorer agent (in parallel with step 4) to thoroughly read and understand the target plan. The agent should:
+   - Read the entire target plan file
+   - Extract every concrete item the target describes, at whatever level of abstraction the target operates
+   - Organize findings into a structured inventory, grouped by section or theme
+   - Note the transformation approach: how does the target translate source concepts into its own domain? (e.g., a PRD's "user profile management" might become specific screens, components, and interactions in a screen plan)
+
+Both agents should return detailed, structured inventories — not summaries. The gap analysis in Phase 3 depends on having complete information from both sides.
+
+## Phase 2: Reconcile Inventories
+
+With both inventories in hand, create a reconciliation matrix. For each item in the source plan, determine whether the target plan addresses it, partially addresses it, or is missing it entirely:
+
+| Source Item | Target Coverage | Gap? |
+|---|---|---|
+| ... | Covered / Partial / Missing | YES / NO |
+
+The transformation between source and target is not 1:1 — a single source requirement may map to multiple target items, or multiple source items may consolidate into one target section. The key question for each source item is: **if someone read only the target plan, would they know about this?**
+
+This matrix is your working document for Phase 3. It ensures nothing from the source is overlooked.
+
+## Phase 3: Gap Analysis
+
+Walk through the reconciliation matrix and identify all gaps across five dimensions.
+
+### Dimension 1: Coverage
+
+Does the target plan address every item from the source? Look for:
+- Source requirements with no corresponding target section or mention
+- Source features that the target ignores or skips
+- Source constraints or edge cases the target doesn't account for
+- Source user stories or flows with no target-side representation
+
+### Dimension 2: Depth
+
+Where the target does address a source item, does it elaborate sufficiently for its level of abstraction? Look for:
+- Surface-level mentions that need more detail (e.g., target says "settings page" but doesn't describe what settings)
+- Placeholder or TODO sections that were never filled in
+- Items described at the wrong level of abstraction for what the target plan is (e.g., a screen plan that just restates PRD requirements without describing actual screens)
+
+### Dimension 3: Accuracy
+
+Do the target's details faithfully represent the source's intent? Look for:
+- Misinterpretations of source requirements (target describes something different than what the source meant)
+- Contradictions between source and target (source says X, target says not-X)
+- Scope drift (target adds things the source didn't ask for, or changes the meaning)
+
+### Dimension 4: Completeness
+
+Are there internal gaps within the target plan itself? Look for:
+- Sections that reference other sections that don't exist
+- Incomplete lists or enumerations (source lists 5 items, target only covers 3)
+- Dangling references or forward mentions that are never resolved
+- Inconsistent terminology between sections of the target
+
+### Dimension 5: Standalone Clarity
+
+Could someone read the target plan alone and fully understand what needs to happen? Look for:
+- Sections that only make sense if you've read the source (implicit context)
+- Ambiguous language that the source clarifies but the target doesn't
+- Missing context or rationale that the target should carry forward from the source
+- Structural issues that make the target hard to follow (poor ordering, missing transitions)
+
+### Classification
+
+For each gap found, classify its severity:
+- **HIGH** — Missing coverage of a source requirement, factual inaccuracy, significant misinterpretation
+- **MEDIUM** — Insufficient depth, partial coverage, unclear language, minor inconsistency
+- **LOW** — Phrasing improvement, structural polish, minor clarity enhancement
+
+If zero gaps are found across all five dimensions, **stop the entire loop** — do not proceed to Phase 4 or beyond, and do not loop back to Phase 1. Output exactly:
+
+```
+<promise>PLANS_ALIGNED</promise>
+```
+
+Only output this promise if you genuinely compared every dimension and found nothing actionable. After outputting the promise, you are done.
+
+If gaps were found, proceed to Phase 4.
+
+## Phase 4: Clarify & Fix
+
+### Ambiguity Check
+
+Plan-to-plan transformations often involve interpretation — a source requirement can map to multiple valid target elaborations. Before fixing, review the gaps for any that have multiple reasonable interpretations. Use `AskUserQuestion` to clarify:
+
+```
+AskUserQuestion:
+  question: "The source says '<quote from source>'. The target doesn't cover this. How should it be represented?"
+  header: "Transform"
+  options:
+    - label: "<interpretation A> (Recommended)"
+      description: "<how this would appear in the target>"
+    - label: "<interpretation B>"
+      description: "<how this would appear in the target>"
+    - label: "Not needed in target"
+      description: "This source item doesn't need representation in the target plan"
+    - label: "Skip this for now"
+      description: "Defer to a later iteration"
+```
+
+This is especially important for:
+- **Abstraction shifts** — how should a high-level requirement break down into specific items at the target's level?
+- **Scope decisions** — should the target include this item, or is it outside the target plan's scope?
+- **Priority calls** — when the source lists many items, which should the target prioritize elaborating?
+
+Only ask about genuinely ambiguous items. If the gap is clearly a missing item that should be added, just add it.
+
+### Fix
+
+Apply gap fixes directly to the target plan file at `<TARGET_PLAN>`. Prioritize HIGH findings first, then MEDIUM, then LOW. Each edit should be surgical: add what's missing, correct what's wrong, and deepen what's shallow — without disrupting sections that are already good.
+
+Guidelines:
+- **Preserve the target's voice and structure** — add content that fits naturally into the existing document
+- **Match the target's level of abstraction** — don't paste source-level language into a target that operates at a different level
+- **Add, don't duplicate** — if the target already partially covers something, extend that section rather than creating a new one
+- **Maintain internal consistency** — new additions should use the same terminology, formatting, and structure as the rest of the target
+
+After all edits are applied, re-read the target plan to verify:
+- The document flows coherently
+- New additions integrate naturally with existing content
+- No contradictions were introduced
+- Formatting and structure are consistent throughout
+
+## Phase 5: Track
+
+Append an iteration entry to `docs/plans/plan-to-plan-tracking.md`:
+
+```markdown
+### Iteration N (YYYY-MM-DD)
+
+**Gaps found:** X (Y HIGH, Z MEDIUM, W LOW)
+**Gaps fixed:** A
+**Deferred:** B
+**User clarifications:** C
+
+#### Dimensions Covered
+
+- Coverage: [summary]
+- Depth: [summary]
+- Accuracy: [summary]
+- Completeness: [summary]
+- Standalone Clarity: [summary]
+
+#### Changes Applied
+
+- [HIGH] Description of change
+- [MEDIUM] Description of change
+- [LOW] Description of change
+
+#### Deferred
+
+- [ ] Description (reason)
+
+#### User Decisions
+
+- "<question>" → "<user's choice>"
+```
+
+After completing Phase 5, loop back to Phase 1 for the next iteration.
+
+If this was the final iteration (iteration count has reached max), stop and report how many iterations were completed and summarize what remains.
