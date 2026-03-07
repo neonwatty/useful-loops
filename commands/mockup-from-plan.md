@@ -1,0 +1,204 @@
+---
+description: "Iteratively compare an HTML/CSS/JS mockup against a plan document and close all gaps until the mockup faithfully matches the plan."
+argument-hint: "PLAN_FILE MOCKUP_DIR [--max N]"
+---
+
+# Mockup from Plan
+
+You are iteratively comparing a static HTML/CSS/JavaScript mockup against a plan document, identifying gaps, and closing them. The plan is the source of truth. Each iteration deeply reads both artifacts, performs a thorough gap analysis, and fixes what's missing. Report progress at each phase.
+
+Parse the arguments: extract the PLAN_FILE path, the MOCKUP_DIR path (a directory containing `.html`, `.css`, and `.js` files), and an optional `--max N` for max iterations (default: 5). Both PLAN_FILE and MOCKUP_DIR are required.
+
+**Plan file:** `<PLAN_FILE>`
+**Mockup directory:** `<MOCKUP_DIR>`
+**Max iterations:** `<N>`
+
+**Prerequisite check:** If either the plan file or the mockup directory does not exist, stop immediately and tell the user: "Both the plan file and the mockup directory must already exist before running this skill. Please create the mockup first, then re-run." Do not create either artifact.
+
+**In-place editing only:** All changes are made directly to existing files within `<MOCKUP_DIR>`. Do not create new directories. If a gap requires a new file (e.g., a new page), create it inside the existing mockup directory.
+
+Repeat Phases 1-5 for up to N iterations. Stop early if Phase 3 finds zero gaps — output the completion promise and stop entirely (do not loop back).
+
+---
+
+## Phase 1: Read & Understand
+
+1. Clear context to free up space for this iteration:
+   ```
+   /clear
+   ```
+
+2. Read `docs/plans/mockup-from-plan-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it (run `mkdir -p docs/plans` first if the directory does not exist):
+   ```markdown
+   # Mockup from Plan — Tracking
+
+   **Plan file:** <path>
+   **Mockup directory:** <path>
+
+   ---
+
+   ## Iteration Log
+   ```
+
+3. If this is iteration 2 or later, review the prior iteration entries in the tracking file. Understand what was already changed so you do not re-tread the same ground or revert prior improvements.
+
+4. **Deep-read the plan.** Use an explorer agent to thoroughly read and understand the plan document. The agent should:
+   - Read the entire plan file
+   - Extract every concrete requirement: pages, screens, components, layout descriptions, content/copy, interactions, styling specs, user flows, data models
+   - Organize findings into a structured inventory of what the plan specifies
+   - Note any vague or ambiguous requirements that may need user clarification
+
+5. **Deep-read the mockup.** Use a second explorer agent (in parallel with step 4) to thoroughly read and understand the current mockup directory. The agent should:
+   - Read all HTML, CSS, and JavaScript files in `<MOCKUP_DIR>`
+   - Inventory every page/screen, section, component, interactive element, and piece of content
+   - Catalog the CSS: colors, fonts, spacing, layout approach, responsive breakpoints
+   - Catalog the JavaScript: event handlers, state management, animations, form validation
+   - Report a structured inventory of what the mockup currently contains
+
+Both agents should return detailed, structured inventories — not summaries. The gap analysis in Phase 3 depends on having complete information from both sides.
+
+## Phase 2: Reconcile Inventories
+
+With both inventories in hand, create a reconciliation matrix. For each item the plan specifies, determine whether the mockup has it, partially has it, or is missing it entirely. Organize this by dimension:
+
+| Plan Requirement | Mockup Status | Gap? |
+|---|---|---|
+| ... | Present / Partial / Missing | YES / NO |
+
+This matrix is your working document for Phase 3. It ensures nothing from the plan is overlooked.
+
+## Phase 3: Gap Analysis
+
+Walk through the reconciliation matrix and identify all gaps across six dimensions.
+
+### Dimension 1: Pages & Screens
+
+Does the mockup contain all pages or screens described in the plan? Look for:
+- Missing pages entirely (plan describes a settings page but mockup has none)
+- Pages present but with wrong scope (plan says 3 tabs, mockup shows 1)
+- Navigation between pages (plan describes a flow, mockup has dead-end pages)
+
+### Dimension 2: Layout & Structure
+
+Does each page's layout match the plan? Look for:
+- Missing sections (plan describes a sidebar, mockup has none)
+- Wrong arrangement (plan says 2-column grid, mockup uses single column)
+- Missing structural elements (headers, footers, navigation bars)
+
+### Dimension 3: Components & UI Elements
+
+Are all interactive and static elements present? Look for:
+- Missing buttons, forms, inputs, dropdowns, modals, cards, tables, lists
+- Missing form fields the plan specifies
+- Missing navigation elements (tabs, breadcrumbs, menus)
+
+### Dimension 4: Content & Copy
+
+Does the mockup's text content match the plan? Look for:
+- Missing or wrong headings, labels, descriptions
+- Placeholder text where the plan specifies actual content
+- Missing empty states, error messages, or status text the plan describes
+
+### Dimension 5: Interactions & Behavior
+
+Does the mockup's JavaScript behavior match the plan? Look for:
+- Missing click handlers (buttons that should open modals, toggle views, submit forms)
+- Missing state changes (tabs that should switch content, toggles, accordions)
+- Missing form validation the plan describes
+- Missing transitions or animations the plan calls for
+
+### Dimension 6: Styling & Visual Design
+
+Does the mockup's appearance match any design specs in the plan? Look for:
+- Missing or wrong colors, fonts, spacing
+- Missing responsive behavior the plan describes
+- Missing visual cues (icons, badges, indicators)
+- Inconsistencies with a design system or style guide referenced in the plan
+
+### Classification
+
+For each gap found, classify its severity:
+- **HIGH** — Missing page, missing core component, broken interaction, structural mismatch with plan
+- **MEDIUM** — Missing secondary element, incomplete content, partial interaction, styling mismatch
+- **LOW** — Minor copy difference, subtle spacing, polish item
+
+If zero gaps are found across all six dimensions, **stop the entire loop** — do not proceed to Phase 4 or beyond, and do not loop back to Phase 1. Output exactly:
+
+```
+<promise>MOCKUP_MATCHES_PLAN</promise>
+```
+
+Only output this promise if you genuinely compared every dimension and found nothing actionable. After outputting the promise, you are done.
+
+If gaps were found, proceed to Phase 4.
+
+## Phase 4: Clarify & Fix
+
+### Ambiguity Check
+
+Before fixing, review the gaps for any that require interpretation. The plan may be vague or open to multiple visual/UX interpretations. For each ambiguous item, use `AskUserQuestion` to clarify:
+
+```
+AskUserQuestion:
+  question: "The plan says '<quote from plan>'. How should this appear in the mockup?"
+  header: "Clarify"
+  options:
+    - label: "<interpretation A> (Recommended)"
+      description: "<what this would look like>"
+    - label: "<interpretation B>"
+      description: "<what this would look like>"
+    - label: "Skip this for now"
+      description: "Defer to a later iteration"
+```
+
+Group related ambiguities into a single question when possible (max 4 options per question). Only ask about genuinely ambiguous items — if the plan is clear, just build it.
+
+### Fix
+
+Apply gap fixes directly to the existing files in `<MOCKUP_DIR>`. Prioritize HIGH findings first, then MEDIUM, then LOW. Each edit should be surgical: add what's missing without disrupting what already works. Edit files in place — do not create new directories or restructure the mockup.
+
+After all edits are applied, re-read the changed files to verify:
+- The HTML is valid and well-structured
+- CSS doesn't have conflicting styles
+- JavaScript doesn't have errors
+- All internal navigation still works
+
+## Phase 5: Track
+
+Append an iteration entry to `docs/plans/mockup-from-plan-tracking.md`:
+
+```markdown
+### Iteration N (YYYY-MM-DD)
+
+**Gaps found:** X (Y HIGH, Z MEDIUM, W LOW)
+**Gaps fixed:** A
+**Deferred:** B
+**User clarifications:** C
+
+#### Dimensions Covered
+
+- Pages & Screens: [summary]
+- Layout & Structure: [summary]
+- Components & UI Elements: [summary]
+- Content & Copy: [summary]
+- Interactions & Behavior: [summary]
+- Styling & Visual Design: [summary]
+
+#### Changes Applied
+
+- [HIGH] Description of change
+- [MEDIUM] Description of change
+- [LOW] Description of change
+
+#### Deferred
+
+- [ ] Description (reason)
+
+#### User Decisions
+
+- "<question>" → "<user's choice>"
+```
+
+After completing Phase 5, loop back to Phase 1 for the next iteration.
+
+If this was the final iteration (iteration count has reached max), stop and report how many iterations were completed and summarize what remains.
