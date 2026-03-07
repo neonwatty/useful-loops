@@ -1,23 +1,22 @@
 ---
-description: "Iteratively compare a real app prototype against an HTML/CSS/JS mockup and close all gaps until the prototype faithfully matches the mockup."
-argument-hint: "MOCKUP_DIR APP_DIR [--max N]"
+description: "One prototype-from-mockup iteration: compare a real app prototype against an HTML/CSS/JS mockup, identify gaps, and fix them."
+argument-hint: "MOCKUP_DIR APP_DIR"
 ---
 
 # Prototype from Mockup
 
-You are iteratively comparing a real application prototype against a static HTML/CSS/JavaScript mockup, identifying gaps, and closing them. The mockup is the source of truth. Each iteration deeply reads both artifacts, performs a thorough gap analysis, and fixes what's missing in the prototype. Report progress at each phase.
+You are performing one complete prototype-from-mockup iteration. The mockup is the source of truth. You will deeply read both artifacts, perform a thorough gap analysis, and fix what's missing in the prototype. Report progress at each phase.
 
-Parse the arguments: extract the MOCKUP_DIR path (a directory containing `.html`, `.css`, and `.js` files — the spec), the APP_DIR path (the directory of the prototype app), and an optional `--max N` for max iterations (default: 5). Both MOCKUP_DIR and APP_DIR are required.
+Parse the arguments: extract the MOCKUP_DIR path (a directory containing `.html`, `.css`, and `.js` files — the spec) and the APP_DIR path (the directory of the prototype app). Both are required.
 
 **Mockup directory:** `<MOCKUP_DIR>`
 **App directory:** `<APP_DIR>`
-**Max iterations:** `<N>`
 
 **Prerequisite check:** If either the mockup directory or the app directory does not exist, stop immediately and tell the user: "Both the mockup directory and the app prototype must already exist before running this skill. Please set up both first, then re-run." Do not create either artifact.
 
 **Build upon what exists:** Do not impose a particular tech stack or architecture. Deeply understand the app's existing structure, conventions, dependencies, and patterns, then build upon them. If the app uses Supabase, use Supabase. If it uses plain React with local state, use that. Follow the app's lead.
 
-Repeat Phases 1-5 for up to N iterations. Stop early if Phase 3 finds zero gaps — output the completion promise and stop entirely (do not loop back).
+Run Phases 1-5 once. If Phase 3 finds zero gaps, output the completion promise and stop.
 
 ---
 
@@ -129,13 +128,7 @@ For each gap found, classify its severity:
 - **MEDIUM** — Missing secondary element, styling mismatch, incomplete interaction, partial data integration
 - **LOW** — Minor visual difference, subtle spacing, polish item
 
-If zero gaps are found across all six dimensions, **stop the entire loop** — do not proceed to Phase 4 or beyond, and do not loop back to Phase 1. Output exactly:
-
-```
-<promise>PROTOTYPE_MATCHES_MOCKUP</promise>
-```
-
-Only output this promise if you genuinely compared every dimension and found nothing actionable. After outputting the promise, you are done.
+If zero gaps are found across all six dimensions, skip to Phase 6 (signal).
 
 If gaps were found, proceed to Phase 4.
 
@@ -239,6 +232,14 @@ Append an iteration entry to `docs/plans/prototype-from-mockup-tracking.md`:
 - "<question>" → "<user's choice>"
 ```
 
-After completing Phase 5, loop back to Phase 1 for the next iteration.
+## Phase 6: Signal
 
-If this was the final iteration (iteration count has reached max), stop and report how many iterations were completed, summarize what was built, and list what remains.
+**If gaps were found and fixed:** exit normally. If running in a Ralph Loop, the loop will re-invoke for the next iteration.
+
+**If NO gaps were found across all six dimensions:** output exactly:
+
+```
+<promise>PROTOTYPE_MATCHES_MOCKUP</promise>
+```
+
+Only output this promise if you genuinely compared every dimension and found nothing actionable.

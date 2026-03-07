@@ -1,17 +1,16 @@
 ---
-description: "Iteratively compare a derived plan against its source plan and close all gaps until the derived plan fully covers the source."
-argument-hint: "SOURCE_PLAN TARGET [--max N]"
+description: "One plan-to-plan iteration: compare a derived plan against its source plan, identify gaps, and fix them."
+argument-hint: "SOURCE_PLAN TARGET"
 ---
 
 # Plan to Plan
 
-You are iteratively comparing a target plan against a source plan, identifying gaps, and closing them. The source plan is the source of truth. The target plan is a transformation of the source — it may change abstraction level, focus, or format (e.g., PRD → screen plan, screen plan → technical spec, technical spec → implementation plan), but it must faithfully cover everything in the source. Each iteration deeply reads both documents, performs a thorough gap analysis, and fixes what's missing in the target. Report progress at each phase.
+You are performing one complete plan-to-plan iteration. The source plan is the source of truth. The target plan is a transformation of the source — it may change abstraction level, focus, or format (e.g., PRD → screen plan, screen plan → technical spec, technical spec → implementation plan), but it must faithfully cover everything in the source. You will deeply read both documents, perform a thorough gap analysis, and fix what's missing in the target. Report progress at each phase.
 
-Parse the arguments: extract the SOURCE_PLAN path (the upstream plan — the source of truth), the TARGET path (the derived plan to refine — either a single `.md` file or a directory of `.md` files), and an optional `--max N` for max iterations (default: 5). Both SOURCE_PLAN and TARGET are required.
+Parse the arguments: extract the SOURCE_PLAN path (the upstream plan — the source of truth) and the TARGET path (the derived plan to refine — either a single `.md` file or a directory of `.md` files). Both are required.
 
 **Source plan:** `<SOURCE_PLAN>`
 **Target:** `<TARGET>`
-**Max iterations:** `<N>`
 
 **Prerequisite check:** If either the source plan or the target file/directory does not exist, stop immediately and tell the user: "Both the source plan and the target must already exist before running this skill. Please create the target first, then re-run." Do not create either artifact.
 
@@ -19,7 +18,7 @@ Parse the arguments: extract the SOURCE_PLAN path (the upstream plan — the sou
 - **A single file** (e.g., `screen-plan.md`) — all edits go to that file
 - **A directory** (e.g., `screen-plan/`) — contains multiple `.md` files organized by topic (e.g., `user-screens.md`, `admin-screens.md`, `api-endpoints.md`). Edits go to the appropriate existing file. New `.md` files may be created inside the directory if a gap naturally belongs in a separate file, but do not create subdirectories.
 
-Repeat Phases 1-5 for up to N iterations. Stop early if Phase 3 finds zero gaps — output the completion promise and stop entirely (do not loop back).
+Run Phases 1-6 once. If Phase 3 finds zero gaps, skip to Phase 6 (signal).
 
 ---
 
@@ -121,13 +120,7 @@ For each gap found, classify its severity:
 - **MEDIUM** — Insufficient depth, partial coverage, unclear language, minor inconsistency
 - **LOW** — Phrasing improvement, structural polish, minor clarity enhancement
 
-If zero gaps are found across all five dimensions, **stop the entire loop** — do not proceed to Phase 4 or beyond, and do not loop back to Phase 1. Output exactly:
-
-```
-<promise>PLANS_ALIGNED</promise>
-```
-
-Only output this promise if you genuinely compared every dimension and found nothing actionable. After outputting the promise, you are done.
+If zero gaps are found across all five dimensions, skip to Phase 6 (signal).
 
 If gaps were found, proceed to Phase 4.
 
@@ -216,6 +209,14 @@ Append an iteration entry to `docs/plans/plan-to-plan-tracking.md`:
 - "<question>" → "<user's choice>"
 ```
 
-After completing Phase 5, loop back to Phase 1 for the next iteration.
+## Phase 6: Signal
 
-If this was the final iteration (iteration count has reached max), stop and report how many iterations were completed and summarize what remains.
+**If gaps were found and fixed:** exit normally. If running in a Ralph Loop, the loop will re-invoke for the next iteration.
+
+**If NO gaps were found across all five dimensions:** output exactly:
+
+```
+<promise>PLANS_ALIGNED</promise>
+```
+
+Only output this promise if you genuinely compared every dimension and found nothing actionable.
