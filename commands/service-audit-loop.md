@@ -12,7 +12,7 @@ Parse the arguments: extract an optional `--max N` for max iterations (default: 
 Now invoke the Ralph Loop skill with these parameters:
 
 ```
-/ralph-loop "/useful-loops:service-audit" --completion-promise "SERVICES_HEALTHY" --max-iterations <N>
+/ralph-loop:ralph-loop "/useful-loops:service-audit" --completion-promise "SERVICES_HEALTHY" --max-iterations <N>
 ```
 
 Replace `<N>` with the max iterations (default 10).

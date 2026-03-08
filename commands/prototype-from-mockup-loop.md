@@ -12,7 +12,7 @@ Parse the arguments: extract the MOCKUP_DIR path, the APP_DIR path, and an optio
 Now invoke the Ralph Loop skill with these parameters:
 
 ```
-/ralph-loop "/useful-loops:prototype-from-mockup <MOCKUP_DIR> <APP_DIR>" --completion-promise "PROTOTYPE_MATCHES_MOCKUP" --max-iterations <N>
+/ralph-loop:ralph-loop "/useful-loops:prototype-from-mockup <MOCKUP_DIR> <APP_DIR>" --completion-promise "PROTOTYPE_MATCHES_MOCKUP" --max-iterations <N>
 ```
 
 Replace `<MOCKUP_DIR>` and `<APP_DIR>` with the paths from the arguments, and `<N>` with the max iterations (default 10).

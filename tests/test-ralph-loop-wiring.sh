@@ -24,8 +24,8 @@ echo ""
 for loop_file in "$COMMANDS_DIR"/*-loop.md; do
   loop_name="$(basename "$loop_file")"
 
-  # Extract the /ralph-loop invocation line
-  ralph_line="$(grep '/ralph-loop ' "$loop_file" 2>/dev/null || true)"
+  # Extract the /ralph-loop invocation line (matches both /ralph-loop and /ralph-loop:ralph-loop)
+  ralph_line="$(grep '/ralph-loop[: ]' "$loop_file" 2>/dev/null || true)"
 
   # Skip loop files that don't use Ralph Loop (e.g. funnel-loop.md)
   if [[ -z "$ralph_line" ]]; then
