@@ -12,7 +12,7 @@ Parse the arguments: extract the quoted PROMPT string, the DOC_FILE path, and an
 Now invoke the Ralph Loop skill with these parameters:
 
 ```
-/ralph-loop "/useful-loops:doc-refine \"<PROMPT>\" <DOC_FILE>" --completion-promise "DOC_REFINED" --max-iterations <N>
+/ralph-loop:ralph-loop "/useful-loops:doc-refine \"<PROMPT>\" <DOC_FILE>" --completion-promise "DOC_REFINED" --max-iterations <N>
 ```
 
 Replace `<PROMPT>` and `<DOC_FILE>` with the values from the arguments, and `<N>` with the max iterations (default 10).

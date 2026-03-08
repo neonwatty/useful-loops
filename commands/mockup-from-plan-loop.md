@@ -12,7 +12,7 @@ Parse the arguments: extract the PLAN path (a single `.md` file or a directory o
 Now invoke the Ralph Loop skill with these parameters:
 
 ```
-/ralph-loop "/useful-loops:mockup-from-plan <PLAN> <MOCKUP_DIR>" --completion-promise "MOCKUP_MATCHES_PLAN" --max-iterations <N>
+/ralph-loop:ralph-loop "/useful-loops:mockup-from-plan <PLAN> <MOCKUP_DIR>" --completion-promise "MOCKUP_MATCHES_PLAN" --max-iterations <N>
 ```
 
 Replace `<PLAN>` and `<MOCKUP_DIR>` with the paths from the arguments, and `<N>` with the max iterations (default 10).

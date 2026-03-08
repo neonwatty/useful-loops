@@ -12,7 +12,7 @@ Parse the arguments: extract the quoted PROMPT string, the PLAN_FILE path, and a
 Now invoke the Ralph Loop skill with these parameters:
 
 ```
-/ralph-loop "/useful-loops:plan-refine \"<PROMPT>\" <PLAN_FILE>" --completion-promise "PLAN_REFINED" --max-iterations <N>
+/ralph-loop:ralph-loop "/useful-loops:plan-refine \"<PROMPT>\" <PLAN_FILE>" --completion-promise "PLAN_REFINED" --max-iterations <N>
 ```
 
 Replace `<PROMPT>` and `<PLAN_FILE>` with the values from the arguments, and `<N>` with the max iterations (default 10).

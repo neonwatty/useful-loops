@@ -12,7 +12,7 @@ Parse the arguments: extract the SOURCE_PLAN path, the TARGET path (a single `.m
 Now invoke the Ralph Loop skill with these parameters:
 
 ```
-/ralph-loop "/useful-loops:plan-to-plan <SOURCE_PLAN> <TARGET>" --completion-promise "PLANS_ALIGNED" --max-iterations <N>
+/ralph-loop:ralph-loop "/useful-loops:plan-to-plan <SOURCE_PLAN> <TARGET>" --completion-promise "PLANS_ALIGNED" --max-iterations <N>
 ```
 
 Replace `<SOURCE_PLAN>` and `<TARGET>` with the paths from the arguments, and `<N>` with the max iterations (default 10).
