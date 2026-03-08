@@ -1,18 +1,22 @@
 ---
 description: "One mockup-from-plan iteration: compare an HTML/CSS/JS mockup against a plan document, identify gaps, and fix them."
-argument-hint: "PLAN_FILE MOCKUP_DIR"
+argument-hint: "PLAN MOCKUP_DIR"
 ---
 
 # Mockup from Plan
 
 You are performing one complete mockup-from-plan iteration. The plan is the source of truth. You will deeply read both artifacts, perform a thorough gap analysis, and fix what's missing in the mockup. Report progress at each phase.
 
-Parse the arguments: extract the PLAN_FILE path and the MOCKUP_DIR path (a directory containing `.html`, `.css`, and `.js` files). Both are required.
+Parse the arguments: extract the PLAN path (a single `.md` file or a directory of `.md` files) and the MOCKUP_DIR path (a directory containing `.html`, `.css`, and `.js` files). Both are required.
 
-**Plan file:** `<PLAN_FILE>`
+**Plan:** `<PLAN>`
 **Mockup directory:** `<MOCKUP_DIR>`
 
-**Prerequisite check:** If either the plan file or the mockup directory does not exist, stop immediately and tell the user: "Both the plan file and the mockup directory must already exist before running this skill. Please create the mockup first, then re-run." Do not create either artifact.
+**Prerequisite check:** If either the plan file/directory or the mockup directory does not exist, stop immediately and tell the user: "Both the plan and the mockup directory must already exist before running this skill. Please create them first, then re-run." Do not create either artifact.
+
+**Plan format:** The plan can be either:
+- **A single file** (e.g., `screen-plan.md`) — one document describing the full plan
+- **A directory** (e.g., `plans/`) — contains multiple `.md` files organized by topic (e.g., `user-screens.md`, `admin-screens.md`, `api-endpoints.md`). All files together form the complete plan.
 
 **In-place editing only:** All changes are made directly to existing files within `<MOCKUP_DIR>`. Do not create new directories. If a gap requires a new file (e.g., a new page), create it inside the existing mockup directory.
 
@@ -26,7 +30,7 @@ Run Phases 1-5 once. If Phase 3 finds zero gaps, output the completion promise a
    ```markdown
    # Mockup from Plan — Tracking
 
-   **Plan file:** <path>
+   **Plan:** <path> (file / directory)
    **Mockup directory:** <path>
 
    ---
@@ -36,8 +40,9 @@ Run Phases 1-5 once. If Phase 3 finds zero gaps, output the completion promise a
 
 2. If this is iteration 2 or later, review the prior iteration entries in the tracking file. Understand what was already changed so you do not re-tread the same ground or revert prior improvements.
 
-3. **Deep-read the plan.** Use an explorer agent to thoroughly read and understand the plan document. The agent should:
-   - Read the entire plan file
+3. **Deep-read the plan.** Use an explorer agent to thoroughly read and understand the plan. The agent should:
+   - If `<PLAN>` is a single file, read the entire file
+   - If `<PLAN>` is a directory, read every `.md` file in the directory and understand how the content is organized across files
    - Extract every concrete requirement: pages, screens, components, layout descriptions, content/copy, interactions, styling specs, user flows, data models
    - Organize findings into a structured inventory of what the plan specifies
    - Note any vague or ambiguous requirements that may need user clarification
