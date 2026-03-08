@@ -18,14 +18,9 @@ Run Phases 1-5 once. If Phase 2 finds zero improvements, skip to Phase 5 (signal
 
 ## Phase 1: Read
 
-1. Clear context to free up space for this iteration:
-   ```
-   /clear
-   ```
+1. Read the document file at `<DOC_FILE>`. If the file does not exist, stop and tell the user.
 
-2. Read the document file at `<DOC_FILE>`. If the file does not exist, stop and tell the user.
-
-3. Read `docs/plans/doc-refine-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it (run `mkdir -p docs/plans` first if the directory does not exist):
+2. Read `docs/plans/doc-refine-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it (run `mkdir -p docs/plans` first if the directory does not exist):
    ```markdown
    # Doc Refine Tracking
 
@@ -37,7 +32,7 @@ Run Phases 1-5 once. If Phase 2 finds zero improvements, skip to Phase 5 (signal
    ## Iteration Log
    ```
 
-4. If this is iteration 2 or later, review the prior iteration entries in the tracking file. Understand what was already changed so you do not re-tread the same ground or revert prior improvements.
+3. If this is iteration 2 or later, review the prior iteration entries in the tracking file. Understand what was already changed so you do not re-tread the same ground or revert prior improvements.
 
 ## Phase 2: Analyze
 

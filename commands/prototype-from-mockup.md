@@ -22,12 +22,7 @@ Run Phases 1-5 once. If Phase 3 finds zero gaps, output the completion promise a
 
 ## Phase 1: Read & Understand
 
-1. Clear context to free up space for this iteration:
-   ```
-   /clear
-   ```
-
-2. Read `docs/plans/prototype-from-mockup-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it (run `mkdir -p docs/plans` first if the directory does not exist):
+1. Read `docs/plans/prototype-from-mockup-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it (run `mkdir -p docs/plans` first if the directory does not exist):
    ```markdown
    # Prototype from Mockup — Tracking
 
@@ -40,16 +35,16 @@ Run Phases 1-5 once. If Phase 3 finds zero gaps, output the completion promise a
    ## Iteration Log
    ```
 
-3. If this is iteration 2 or later, review the prior iteration entries in the tracking file. Understand what was already built so you do not re-tread the same ground or revert prior work.
+2. If this is iteration 2 or later, review the prior iteration entries in the tracking file. Understand what was already built so you do not re-tread the same ground or revert prior work.
 
-4. **Deep-read the mockup.** Use an explorer agent to thoroughly read and understand the mockup directory. The agent should:
+3. **Deep-read the mockup.** Use an explorer agent to thoroughly read and understand the mockup directory. The agent should:
    - Read all HTML, CSS, and JavaScript files in `<MOCKUP_DIR>`
    - Inventory every page/screen, section, component, interactive element, and piece of content
    - Catalog the CSS: colors (exact hex/rgb values), fonts, spacing values, layout approach (grid vs flexbox), responsive breakpoints
    - Catalog the JavaScript: event handlers, state management, animations, form validation, modal behavior
    - Report a structured inventory of everything the mockup contains — this is the spec
 
-5. **Deep-read the prototype.** Use a second explorer agent (in parallel with step 4) to thoroughly read and understand the current prototype app. The agent should:
+4. **Deep-read the prototype.** Use a second explorer agent (in parallel with step 4) to thoroughly read and understand the current prototype app. The agent should:
    - Read `package.json` to understand dependencies, scripts, and stack
    - Explore the full directory structure to map all pages/routes, components, layouts, styles, utilities, and data files
    - Read every page and component file — understand what each renders, what props it takes, what state it manages
@@ -58,7 +53,7 @@ Run Phases 1-5 once. If Phase 3 finds zero gaps, output the completion promise a
    - Identify the data layer: how data flows (props, context, API routes, server actions, local storage)
    - Report a structured inventory of everything the prototype currently implements
 
-Both agents should return detailed, structured inventories — not summaries. The gap analysis in Phase 3 depends on having complete information from both sides.
+Both agents should return detailed, structured inventories — not summaries. The gap analysis in Phase 3 depends on having complete information from both sides. If an agent hits context limits, it should use `/compact` to compress prior context and continue working rather than stopping.
 
 ## Phase 2: Reconcile Inventories
 
