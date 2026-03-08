@@ -24,12 +24,7 @@ Run Phases 1-6 once. If Phase 3 finds zero gaps, skip to Phase 6 (signal).
 
 ## Phase 1: Read & Understand
 
-1. Clear context to free up space for this iteration:
-   ```
-   /clear
-   ```
-
-2. Read `docs/plans/plan-to-plan-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it (run `mkdir -p docs/plans` first if the directory does not exist):
+1. Read `docs/plans/plan-to-plan-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it (run `mkdir -p docs/plans` first if the directory does not exist):
    ```markdown
    # Plan to Plan — Tracking
 
@@ -41,15 +36,15 @@ Run Phases 1-6 once. If Phase 3 finds zero gaps, skip to Phase 6 (signal).
    ## Iteration Log
    ```
 
-3. If this is iteration 2 or later, review the prior iteration entries in the tracking file. Understand what was already changed so you do not re-tread the same ground or revert prior improvements.
+2. If this is iteration 2 or later, review the prior iteration entries in the tracking file. Understand what was already changed so you do not re-tread the same ground or revert prior improvements.
 
-4. **Deep-read the source plan.** Use an explorer agent to thoroughly read and understand the source plan. The agent should:
+3. **Deep-read the source plan.** Use an explorer agent to thoroughly read and understand the source plan. The agent should:
    - Read the entire source plan file
    - Extract every concrete item: requirements, features, user stories, goals, constraints, flows, data models, acceptance criteria, edge cases — whatever the source plan contains
    - Organize findings into a structured inventory, grouped by section or theme
    - Note the level of abstraction and intent of each item (what is the source trying to specify?)
 
-5. **Deep-read the target.** Use a second explorer agent (in parallel with step 4) to thoroughly read and understand the target. The agent should:
+4. **Deep-read the target.** Use a second explorer agent (in parallel with step 4) to thoroughly read and understand the target. The agent should:
    - If `<TARGET>` is a single file, read the entire file
    - If `<TARGET>` is a directory, read every `.md` file in the directory and understand how the content is organized across files
    - Extract every concrete item the target describes, at whatever level of abstraction the target operates
@@ -57,7 +52,7 @@ Run Phases 1-6 once. If Phase 3 finds zero gaps, skip to Phase 6 (signal).
    - Note the transformation approach: how does the target translate source concepts into its own domain? (e.g., a PRD's "user profile management" might become specific screens, components, and interactions in a screen plan)
    - If a directory, note the organizational scheme — how are topics split across files? This matters for knowing where to place new content
 
-Both agents should return detailed, structured inventories — not summaries. The gap analysis in Phase 3 depends on having complete information from both sides.
+Both agents should return detailed, structured inventories — not summaries. The gap analysis in Phase 3 depends on having complete information from both sides. If an agent hits context limits, it should use `/compact` to compress prior context and continue working rather than stopping.
 
 ## Phase 2: Reconcile Inventories
 

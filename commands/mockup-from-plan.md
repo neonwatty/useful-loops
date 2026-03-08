@@ -22,12 +22,7 @@ Run Phases 1-5 once. If Phase 3 finds zero gaps, output the completion promise a
 
 ## Phase 1: Read & Understand
 
-1. Clear context to free up space for this iteration:
-   ```
-   /clear
-   ```
-
-2. Read `docs/plans/mockup-from-plan-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it (run `mkdir -p docs/plans` first if the directory does not exist):
+1. Read `docs/plans/mockup-from-plan-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it (run `mkdir -p docs/plans` first if the directory does not exist):
    ```markdown
    # Mockup from Plan — Tracking
 
@@ -39,22 +34,22 @@ Run Phases 1-5 once. If Phase 3 finds zero gaps, output the completion promise a
    ## Iteration Log
    ```
 
-3. If this is iteration 2 or later, review the prior iteration entries in the tracking file. Understand what was already changed so you do not re-tread the same ground or revert prior improvements.
+2. If this is iteration 2 or later, review the prior iteration entries in the tracking file. Understand what was already changed so you do not re-tread the same ground or revert prior improvements.
 
-4. **Deep-read the plan.** Use an explorer agent to thoroughly read and understand the plan document. The agent should:
+3. **Deep-read the plan.** Use an explorer agent to thoroughly read and understand the plan document. The agent should:
    - Read the entire plan file
    - Extract every concrete requirement: pages, screens, components, layout descriptions, content/copy, interactions, styling specs, user flows, data models
    - Organize findings into a structured inventory of what the plan specifies
    - Note any vague or ambiguous requirements that may need user clarification
 
-5. **Deep-read the mockup.** Use a second explorer agent (in parallel with step 4) to thoroughly read and understand the current mockup directory. The agent should:
+4. **Deep-read the mockup.** Use a second explorer agent (in parallel with step 4) to thoroughly read and understand the current mockup directory. The agent should:
    - Read all HTML, CSS, and JavaScript files in `<MOCKUP_DIR>`
    - Inventory every page/screen, section, component, interactive element, and piece of content
    - Catalog the CSS: colors, fonts, spacing, layout approach, responsive breakpoints
    - Catalog the JavaScript: event handlers, state management, animations, form validation
    - Report a structured inventory of what the mockup currently contains
 
-Both agents should return detailed, structured inventories — not summaries. The gap analysis in Phase 3 depends on having complete information from both sides.
+Both agents should return detailed, structured inventories — not summaries. The gap analysis in Phase 3 depends on having complete information from both sides. If an agent hits context limits, it should use `/compact` to compress prior context and continue working rather than stopping.
 
 ## Phase 2: Reconcile Inventories
 
