@@ -1,0 +1,16 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-ralph-loop-wiring:
+    name: Ralph Loop Wiring
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify loop wrapper ↔ skill promise wiring
+        run: bash tests/test-ralph-loop-wiring.sh

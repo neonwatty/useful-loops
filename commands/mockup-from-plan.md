@@ -1,23 +1,22 @@
 ---
-description: "Iteratively compare an HTML/CSS/JS mockup against a plan document and close all gaps until the mockup faithfully matches the plan."
-argument-hint: "PLAN_FILE MOCKUP_DIR [--max N]"
+description: "One mockup-from-plan iteration: compare an HTML/CSS/JS mockup against a plan document, identify gaps, and fix them."
+argument-hint: "PLAN_FILE MOCKUP_DIR"
 ---
 
 # Mockup from Plan
 
-You are iteratively comparing a static HTML/CSS/JavaScript mockup against a plan document, identifying gaps, and closing them. The plan is the source of truth. Each iteration deeply reads both artifacts, performs a thorough gap analysis, and fixes what's missing. Report progress at each phase.
+You are performing one complete mockup-from-plan iteration. The plan is the source of truth. You will deeply read both artifacts, perform a thorough gap analysis, and fix what's missing in the mockup. Report progress at each phase.
 
-Parse the arguments: extract the PLAN_FILE path, the MOCKUP_DIR path (a directory containing `.html`, `.css`, and `.js` files), and an optional `--max N` for max iterations (default: 5). Both PLAN_FILE and MOCKUP_DIR are required.
+Parse the arguments: extract the PLAN_FILE path and the MOCKUP_DIR path (a directory containing `.html`, `.css`, and `.js` files). Both are required.
 
 **Plan file:** `<PLAN_FILE>`
 **Mockup directory:** `<MOCKUP_DIR>`
-**Max iterations:** `<N>`
 
 **Prerequisite check:** If either the plan file or the mockup directory does not exist, stop immediately and tell the user: "Both the plan file and the mockup directory must already exist before running this skill. Please create the mockup first, then re-run." Do not create either artifact.
 
 **In-place editing only:** All changes are made directly to existing files within `<MOCKUP_DIR>`. Do not create new directories. If a gap requires a new file (e.g., a new page), create it inside the existing mockup directory.
 
-Repeat Phases 1-5 for up to N iterations. Stop early if Phase 3 finds zero gaps — output the completion promise and stop entirely (do not loop back).
+Run Phases 1-5 once. If Phase 3 finds zero gaps, output the completion promise and stop.
 
 ---
 
@@ -122,13 +121,7 @@ For each gap found, classify its severity:
 - **MEDIUM** — Missing secondary element, incomplete content, partial interaction, styling mismatch
 - **LOW** — Minor copy difference, subtle spacing, polish item
 
-If zero gaps are found across all six dimensions, **stop the entire loop** — do not proceed to Phase 4 or beyond, and do not loop back to Phase 1. Output exactly:
-
-```
-<promise>MOCKUP_MATCHES_PLAN</promise>
-```
-
-Only output this promise if you genuinely compared every dimension and found nothing actionable. After outputting the promise, you are done.
+If zero gaps are found across all six dimensions, skip to Phase 6 (signal).
 
 If gaps were found, proceed to Phase 4.
 
@@ -199,6 +192,14 @@ Append an iteration entry to `docs/plans/mockup-from-plan-tracking.md`:
 - "<question>" → "<user's choice>"
 ```
 
-After completing Phase 5, loop back to Phase 1 for the next iteration.
+## Phase 6: Signal
 
-If this was the final iteration (iteration count has reached max), stop and report how many iterations were completed and summarize what remains.
+**If gaps were found and fixed:** exit normally. If running in a Ralph Loop, the loop will re-invoke for the next iteration.
+
+**If NO gaps were found across all six dimensions:** output exactly:
+
+```
+<promise>MOCKUP_MATCHES_PLAN</promise>
+```
+
+Only output this promise if you genuinely compared every dimension and found nothing actionable.

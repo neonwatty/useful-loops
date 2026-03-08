@@ -1,19 +1,18 @@
 ---
-description: "Iteratively refine a plan document using a prompt-driven analysis loop."
-argument-hint: "\"PROMPT\" PLAN_FILE [--max N]"
+description: "One plan-refine iteration: apply a prompt-driven analysis to a plan document, identify improvements, and apply them."
+argument-hint: "\"PROMPT\" PLAN_FILE"
 ---
 
 # Plan Refine
 
-You are performing iterative refinement of a plan document. Apply the user's analysis prompt repeatedly, improving the plan in-place until no further improvements are found or the iteration limit is reached. Report progress at each phase.
+You are performing one complete plan-refine iteration. Apply the user's analysis prompt to the plan document, identify improvements, and apply them. Report progress at each phase.
 
-Parse the arguments: extract the quoted PROMPT string, the PLAN_FILE path, and an optional `--max N` for max iterations (default: 5). If the prompt is not quoted, treat everything before the last path-like argument (and any `--max N`) as the prompt.
+Parse the arguments: extract the quoted PROMPT string and the PLAN_FILE path. If the prompt is not quoted, treat everything before the last path-like argument as the prompt.
 
 **Prompt:** `<PROMPT>`
 **Plan file:** `<PLAN_FILE>`
-**Max iterations:** `<N>`
 
-Repeat Phases 1-4 for up to N iterations. Stop early if Phase 2 finds zero improvements — output the completion promise and stop entirely (do not loop back).
+Run Phases 1-5 once. If Phase 2 finds zero improvements, skip to Phase 5 (signal).
 
 ---
 
@@ -49,13 +48,7 @@ For each improvement found, classify its severity:
 - **MEDIUM** — Unclear wording, weak justification, missing detail, inconsistent formatting
 - **LOW** — Minor phrasing, typos, stylistic polish, redundant wording
 
-If zero improvements are found at any severity level, **stop the entire loop** — do not proceed to Phase 3 or 4, and do not loop back to Phase 1. Output exactly:
-
-```
-<promise>PLAN_REFINED</promise>
-```
-
-Only output this promise if you genuinely analyzed the full plan against the prompt and found nothing actionable. After outputting the promise, you are done.
+If zero improvements are found at any severity level, skip to Phase 5 (signal).
 
 If improvements were found, proceed to Phase 3.
 
@@ -83,6 +76,14 @@ Append an iteration entry to `docs/plans/plan-refine-tracking.md`:
 - [LOW] Description of change
 ```
 
-After completing Phase 4, loop back to Phase 1 for the next iteration.
+## Phase 5: Signal
 
-If this was the final iteration (iteration count has reached max), stop and report how many iterations were completed and summarize the cumulative changes.
+**If improvements were found and applied:** exit normally. If running in a Ralph Loop, the loop will re-invoke for the next iteration.
+
+**If NO improvements were found:** output exactly:
+
+```
+<promise>PLAN_REFINED</promise>
+```
+
+Only output this promise if you genuinely analyzed the full plan against the prompt and found nothing actionable.
