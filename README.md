@@ -1,6 +1,6 @@
 # useful-loops
 
-A Claude Code plugin for autonomous, iterative codebase improvement. Runs gap analysis, test coverage, security audits, beta-readiness audits, service health audits, and top-of-funnel marketing audits in loops that find issues, fix them, PR, pass CI, merge, and repeat.
+A Claude Code plugin for autonomous, iterative codebase improvement. Runs gap analysis, test coverage, security audits, beta-readiness audits, service health audits, funnel audits, plan refinement, document refinement, plan-to-plan alignment, mockup generation, and prototype building in loops that find issues, fix them, PR, pass CI, merge, and repeat.
 
 Designed to work with the [Ralph Loop](https://github.com/anthropics/claude-code/tree/main/plugins/ralph-loop) plugin for automated iteration.
 
@@ -29,6 +29,9 @@ claude plugin install ralph-loop
 | `/useful-loops:beta-audit` | Holistic beta-readiness review across 5 dimensions |
 | `/useful-loops:service-audit` | Audit Vercel, Supabase, PostHog, Sentry, GitHub for issues |
 | `/useful-loops:funnel-audit` | Audit one top-of-funnel marketing category, fix issues |
+| `/useful-loops:plan-to-plan <source> <target>` | Align a derived plan against its source plan |
+| `/useful-loops:mockup-from-plan <plan> <mockup-dir>` | Build/refine an HTML mockup from a plan document |
+| `/useful-loops:prototype-from-mockup <mockup-dir> <app-dir>` | Build/refine an app prototype from an HTML mockup |
 
 ### Looped (requires ralph-loop plugin)
 
@@ -39,7 +42,10 @@ claude plugin install ralph-loop
 | `/useful-loops:security-loop [--max N]` | Loop security audit until all categories clean |
 | `/useful-loops:beta-audit-loop [--max N]` | Loop beta audit until no HIGH/MEDIUM code findings |
 | `/useful-loops:service-audit-loop [--max N]` | Loop service audit until no CRITICAL/HIGH findings |
-| `/useful-loops:funnel-loop [--max N]` | Loop funnel audit until all marketing categories optimized |
+| `/useful-loops:funnel-loop` | Guide for running funnel audit iterations (interactive, not automated) |
+| `/useful-loops:plan-to-plan-loop <source> <target> [--max N]` | Loop plan-to-plan until target fully covers source |
+| `/useful-loops:mockup-from-plan-loop <plan> <mockup-dir> [--max N]` | Loop mockup-from-plan until mockup matches plan |
+| `/useful-loops:prototype-from-mockup-loop <mockup-dir> <app-dir> [--max N]` | Loop prototype-from-mockup until prototype matches mockup |
 
 Default max iterations: 10.
 
@@ -81,6 +87,9 @@ Each skill maintains a tracking file in `docs/plans/`:
 - `funnel-audit-tracking.md` — funnel audit iterations
 - `plan-refine-tracking.md` — plan refinement iterations
 - `doc-refine-tracking.md` — document refinement iterations
+- `plan-to-plan-tracking.md` — plan-to-plan alignment iterations
+- `mockup-from-plan-tracking.md` — mockup generation iterations
+- `prototype-from-mockup-tracking.md` — prototype building iterations
 
 These files are created automatically on first run and serve as inter-iteration memory.
 
@@ -201,6 +210,46 @@ Iteratively improves a document in-place by applying a user-provided analysis pr
 
 **Completion:** `DOC_REFINED` when no improvements are found at any severity level.
 
+### Plan-to-Plan
+
+Aligns a derived plan (target) against its source plan across 5 dimensions:
+
+- Coverage — does the target address every item from the source?
+- Depth — does the target elaborate sufficiently at its level of abstraction?
+- Accuracy — does the target faithfully represent the source's intent?
+- Completeness — are there internal gaps within the target?
+- Standalone Clarity — could someone read the target alone and fully understand it?
+
+Handles abstraction shifts (e.g., PRD to screen plan, screen plan to technical spec). Target can be a single file or a directory of `.md` files.
+
+**Completion:** `PLANS_ALIGNED` when no gaps found across all 5 dimensions.
+
+### Mockup-from-Plan
+
+Builds and refines an HTML/CSS/JS mockup to match a plan document across 5 dimensions:
+
+- Pages & Sections — all pages/screens from the plan exist as HTML files
+- Components & Elements — all UI elements described in the plan are present
+- Layout & Structure — page structure matches the plan's specifications
+- Content & Copy — text, labels, and placeholder content match the plan
+- Interactions & States — JavaScript behaviors match the plan's interaction descriptions
+
+**Completion:** `MOCKUP_MATCHES_PLAN` when the mockup faithfully represents everything in the plan.
+
+### Prototype-from-Mockup
+
+Translates an HTML/CSS/JS mockup into a real app prototype across 6 dimensions:
+
+- Pages & Routes — all mockup pages have corresponding app routes
+- Components — all UI components from the mockup are implemented
+- Layout & Structure — page structure matches the mockup
+- Styling & Visual Fidelity — colors, fonts, spacing match exact values from mockup CSS
+- Interactions & State — interactive elements work as they do in the mockup
+- Data & Backend — mockup data is connected to the app's existing data layer
+
+Follows the app's existing conventions (framework, CSS approach, data layer) rather than imposing new patterns.
+
+**Completion:** `PROTOTYPE_MATCHES_MOCKUP` when no gaps found across all 6 dimensions.
 
 ## Examples
 
@@ -237,6 +286,18 @@ Iteratively improves a document in-place by applying a user-provided analysis pr
 
 # Iteratively refine a document for clarity
 /useful-loops:doc-refine "improve readability for non-technical audience" docs/user-guide.md
+
+# Align a screen plan against a PRD
+/useful-loops:plan-to-plan docs/plans/prd.md docs/plans/screen-plan.md
+
+# Loop plan-to-plan until fully aligned
+/useful-loops:plan-to-plan-loop docs/plans/prd.md docs/plans/screen-plan/
+
+# Build a mockup from a plan
+/useful-loops:mockup-from-plan docs/plans/screen-plan.md mockup/
+
+# Build a prototype from a mockup
+/useful-loops:prototype-from-mockup mockup/ .
 ```
 
 ## License

@@ -45,7 +45,7 @@ Run Phases 1-5 once. If Phase 3 finds zero gaps, output the completion promise a
    - Catalog the JavaScript: event handlers, state management, animations, form validation, modal behavior
    - Report a structured inventory of everything the mockup contains — this is the spec
 
-4. **Deep-read the prototype.** Use a second explorer agent (in parallel with step 4) to thoroughly read and understand the current prototype app. The agent should:
+4. **Deep-read the prototype.** Use a second explorer agent (in parallel with step 3) to thoroughly read and understand the current prototype app. The agent should:
    - Read `package.json` to understand dependencies, scripts, and stack
    - Explore the full directory structure to map all pages/routes, components, layouts, styles, utilities, and data files
    - Read every page and component file — understand what each renders, what props it takes, what state it manages

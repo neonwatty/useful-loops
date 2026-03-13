@@ -48,7 +48,7 @@ Run Phases 1-5 once. If Phase 3 finds zero gaps, output the completion promise a
    - Organize findings into a structured inventory of what the plan specifies
    - Note any vague or ambiguous requirements that may need user clarification
 
-4. **Deep-read the mockup.** Use a second explorer agent (in parallel with step 4) to thoroughly read and understand the current mockup directory. The agent should:
+4. **Deep-read the mockup.** Use a second explorer agent (in parallel with step 3) to thoroughly read and understand the current mockup directory. The agent should:
    - Read all HTML, CSS, and JavaScript files in `<MOCKUP_DIR>`
    - Inventory every page/screen, section, component, interactive element, and piece of content
    - Catalog the CSS: colors, fonts, spacing, layout approach, responsive breakpoints

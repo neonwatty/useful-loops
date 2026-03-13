@@ -154,24 +154,7 @@ After getting user approval on the approach, implement the agreed-upon fixes:
 
 ## Phase 4: Validate
 
-Run the project's quality checks. Look for scripts in `package.json`, `Makefile`, or CI config:
-
-```bash
-npm run lint:fix 2>/dev/null || true
-npm run typecheck 2>/dev/null || true
-npm run test 2>/dev/null || true
-```
-
-If any check fails, fix the issue and re-run. Max 3 fix attempts per check. If still failing after 3 attempts, revert the problematic change and note it as deferred.
-
-Check E2E tests for stale assertions if content or behavior was changed. Marketing changes are particularly likely to break snapshot tests or content-dependent assertions — update them accordingly.
-
-After validation is complete, clean up test artifacts and ensure no test processes are still running:
-
-```bash
-rm -rf coverage .nyc_output 2>/dev/null || true
-pkill -f "vitest|jest" 2>/dev/null || true
-```
+Follow the **Validate** phase in `references/common-lifecycle.md`. Marketing changes are particularly likely to break snapshot tests or content-dependent assertions — update them accordingly.
 
 ## Phase 5: Update Tracking
 
@@ -212,7 +195,7 @@ Update the category's status in the Categories table at the top of the tracking 
 
 **If issues were found and fixed:**
 
-Ask the user before shipping:
+Before shipping, ask the user for confirmation:
 
 ```
 AskUserQuestion:
@@ -229,59 +212,30 @@ AskUserQuestion:
 
 If "Let me review the diff first," run `git diff` and present it. Wait for user confirmation before proceeding.
 
-Once approved:
-
-1. Stage specific changed files (do NOT use `git add -A` or `git add .`):
-   ```bash
-   git add <list of specific files>
-   ```
-2. Commit:
-   ```bash
-   git commit -m "fix: funnel-audit: <category> improvements from iteration N"
-   ```
-3. Push:
-   ```bash
-   git push -u origin funnel-audit/iteration-<N>
-   ```
-4. Create PR:
-   ```bash
-   gh pr create --title "Funnel Audit: Iteration N — <category>" --body "Top-of-funnel marketing audit. See docs/plans/funnel-audit-tracking.md for details."
-   ```
+Once approved, follow the **Ship** phase in `references/common-lifecycle.md` with:
+- **Branch:** `funnel-audit/iteration-<N>`
+- **Commit:** `fix: funnel-audit: <category> improvements from iteration N`
+- **PR title:** `Funnel Audit: Iteration N — <category>`
+- **PR body:** `Top-of-funnel marketing audit. See docs/plans/funnel-audit-tracking.md for details.`
 
 **If NO issues found AND all 7 categories completed:** skip to Phase 8.
 
 ## Phase 7: CI & Merge
 
-1. Note the PR number from the create output.
-2. Poll CI status every 45 seconds:
-   ```bash
-   gh pr checks <number>
-   ```
-3. Report the status of each check between polls.
-4. When all checks complete:
-   - **All pass** → ask user before merging:
-     ```
-     AskUserQuestion:
-       question: "CI is green. Merge this PR?"
-       header: "Merge"
-       options:
-         - label: "Yes, squash and merge (Recommended)"
-           description: "Merge the PR and clean up the branch"
-         - label: "Leave it open"
-           description: "I want to review the PR on GitHub first"
-     ```
-     If approved:
-     ```bash
-     gh pr merge <number> --squash --delete-branch
-     git checkout main && git pull origin main
-     ```
-   - **Any fail** → read logs, fix, push, re-poll (max 3 fix attempts):
-     ```bash
-     gh run view <run-id> --log-failed
-     # fix the issue
-     git add <specific files> && git commit -m "fix: address CI failure in funnel-audit iteration N"
-     git push
-     ```
+Follow the **CI & Merge** phase in `references/common-lifecycle.md`, but **ask the user before merging** (funnel audits are interactive):
+
+```
+AskUserQuestion:
+  question: "CI is green. Merge this PR?"
+  header: "Merge"
+  options:
+    - label: "Yes, squash and merge (Recommended)"
+      description: "Merge the PR and clean up the branch"
+    - label: "Leave it open"
+      description: "I want to review the PR on GitHub first"
+```
+
+Only merge after user approval.
 
 ## Phase 8: Signal
 

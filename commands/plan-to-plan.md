@@ -45,7 +45,7 @@ Run Phases 1-6 once. If Phase 3 finds zero gaps, skip to Phase 6 (signal).
    - Organize findings into a structured inventory, grouped by section or theme
    - Note the level of abstraction and intent of each item (what is the source trying to specify?)
 
-4. **Deep-read the target.** Use a second explorer agent (in parallel with step 4) to thoroughly read and understand the target. The agent should:
+4. **Deep-read the target.** Use a second explorer agent (in parallel with step 3) to thoroughly read and understand the target. The agent should:
    - If `<TARGET>` is a single file, read the entire file
    - If `<TARGET>` is a directory, read every `.md` file in the directory and understand how the content is organized across files
    - Extract every concrete item the target describes, at whatever level of abstraction the target operates
