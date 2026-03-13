@@ -8,17 +8,12 @@ You are performing one complete security audit iteration. Report progress at eac
 
 ## Phase 1: Setup
 
-1. Compact context to free up space for this iteration. This is especially important when running in a Ralph Loop where prior iterations may have filled the context window:
-   ```
-   /compact
-   ```
-
-2. Ensure you are on main with the latest code:
+1. Ensure you are on main with the latest code:
    ```bash
    git checkout main && git pull origin main
    ```
 
-3. Read `docs/plans/security-audit-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it:
+2. Read `docs/plans/security-audit-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it:
    ```markdown
    # Security Audit Tracking
 
@@ -29,12 +24,12 @@ You are performing one complete security audit iteration. Report progress at eac
    ## Iteration Log
    ```
 
-4. Create an iteration branch:
+3. Create an iteration branch:
    ```bash
    git checkout -b security-audit/iteration-<N>
    ```
 
-5. Review which categories were already audited in prior iterations. Pick the next 1-2 unaudited categories from the list below.
+4. Review which categories were already audited in prior iterations. Pick the next 1-2 unaudited categories from the list below.
 
 ## Phase 2: Audit Categories
 
