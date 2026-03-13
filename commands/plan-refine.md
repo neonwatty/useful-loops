@@ -1,6 +1,6 @@
 ---
 name: plan-refine
-description: "One plan-refine iteration: apply a prompt-driven analysis to a plan document, identify improvements, and apply them."
+description: "This command should be used when the user asks to 'refine a plan', 'improve this plan', 'polish a plan document', or 'apply a prompt to a plan'. Runs one iteration: applies a prompt-driven analysis to a plan document, identifies improvements, and applies them."
 argument-hint: "\"PROMPT\" PLAN_FILE"
 ---
 

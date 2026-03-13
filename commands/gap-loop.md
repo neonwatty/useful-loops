@@ -1,6 +1,6 @@
 ---
 name: gap-loop
-description: "Loop gap analysis until no gaps remain. Requires ralph-loop plugin."
+description: "This command should be used when the user asks to 'loop gap analysis', 'keep running gap analysis', or 'close all gaps against a reference'. Loops gap analysis iterations until no gaps remain. Requires ralph-loop plugin."
 argument-hint: "REFERENCE_REPO_URL [--max N]"
 ---
 

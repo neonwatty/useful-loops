@@ -1,6 +1,6 @@
 ---
 name: security-audit
-description: "One security audit iteration: systematically check 1-2 OWASP categories, fix issues, validate, PR, CI, merge."
+description: "This command should be used when the user asks to 'run a security audit', 'check for OWASP vulnerabilities', 'find security issues', or 'harden the app'. Runs one iteration: systematically checks 1-2 OWASP categories, fixes issues, validates, PRs, runs CI, and merges."
 ---
 
 # Security Audit — Full Cycle

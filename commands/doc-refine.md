@@ -1,6 +1,6 @@
 ---
 name: doc-refine
-description: "One doc-refine iteration: apply a prompt-driven analysis to a document, identify improvements, and apply them."
+description: "This command should be used when the user asks to 'refine a document', 'improve this doc', 'polish documentation', or 'apply a prompt to a document'. Runs one iteration: applies a prompt-driven analysis to a document, identifies improvements, and applies them."
 argument-hint: "\"PROMPT\" DOC_FILE"
 ---
 

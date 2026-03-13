@@ -1,6 +1,6 @@
 ---
 name: mockup-from-plan-loop
-description: "Loop mockup-from-plan until the mockup fully matches the plan. Requires ralph-loop plugin."
+description: "This command should be used when the user asks to 'loop mockup from plan', 'keep building mockup until it matches the plan', or 'iteratively close mockup gaps'. Loops mockup-from-plan iterations until the mockup fully matches the plan. Requires ralph-loop plugin."
 argument-hint: "PLAN MOCKUP_DIR [--max N]"
 ---
 

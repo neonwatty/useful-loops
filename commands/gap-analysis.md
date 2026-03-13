@@ -1,6 +1,6 @@
 ---
 name: gap-analysis
-description: "One gap analysis iteration: compare this app against a reference app, fix gaps, validate, PR, CI, merge."
+description: "This command should be used when the user asks to 'run a gap analysis', 'compare against a reference app', 'find gaps versus a reference', or 'close feature gaps'. Runs one iteration: compares this app against a reference app, fixes gaps, validates, PRs, runs CI, and merges."
 argument-hint: "REFERENCE_REPO_URL"
 ---
 

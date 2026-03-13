@@ -1,6 +1,6 @@
 ---
 name: prototype-from-mockup-loop
-description: "Loop prototype-from-mockup until the prototype fully matches the mockup. Requires ralph-loop plugin."
+description: "This command should be used when the user asks to 'loop prototype from mockup', 'keep building prototype until it matches', or 'iteratively close prototype gaps'. Loops prototype-from-mockup iterations until the prototype fully matches the mockup. Requires ralph-loop plugin."
 argument-hint: "MOCKUP_DIR APP_DIR [--max N]"
 ---
 

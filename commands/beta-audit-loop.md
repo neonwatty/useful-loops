@@ -1,6 +1,6 @@
 ---
 name: beta-audit-loop
-description: "Loop beta audit until no HIGH/MEDIUM code findings remain. Requires ralph-loop plugin."
+description: "This command should be used when the user asks to 'loop beta audit', 'keep auditing for beta readiness', or 'fix all beta issues'. Loops beta audit iterations until no HIGH/MEDIUM code findings remain. Requires ralph-loop plugin."
 argument-hint: "[--max N]"
 ---
 

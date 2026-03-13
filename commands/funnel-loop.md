@@ -1,6 +1,6 @@
 ---
 name: funnel-loop
-description: "Run the next funnel-audit iteration interactively. Unlike other sweeps, funnel audits require human judgment for marketing decisions."
+description: "This command should be used when the user asks to 'loop funnel audit', 'keep auditing funnel categories', or 'audit all marketing categories'. Runs the next funnel-audit iteration interactively via Ralph Loop. Unlike other loops, funnel audits require human judgment for marketing decisions. Requires ralph-loop plugin."
 argument-hint: ""
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: plan-to-plan
-description: "One plan-to-plan iteration: compare a derived plan against its source plan, identify gaps, and fix them."
+description: "This command should be used when the user asks to 'compare plans', 'align a derived plan with its source', 'run plan-to-plan', or 'close gaps between plans'. Runs one iteration: compares a derived plan against its source plan, identifies gaps, and fixes them."
 argument-hint: "SOURCE_PLAN TARGET"
 ---
 

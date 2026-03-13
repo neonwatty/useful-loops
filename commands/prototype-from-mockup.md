@@ -1,6 +1,6 @@
 ---
 name: prototype-from-mockup
-description: "One prototype-from-mockup iteration: compare a real app prototype against an HTML/CSS/JS mockup, identify gaps, and fix them."
+description: "This command should be used when the user asks to 'build prototype from mockup', 'implement mockup in the app', 'compare prototype against mockup', or 'close prototype gaps'. Runs one iteration: compares a real app prototype against an HTML/CSS/JS mockup, identifies gaps, and fixes them."
 argument-hint: "MOCKUP_DIR APP_DIR"
 ---
 

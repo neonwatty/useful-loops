@@ -1,6 +1,6 @@
 ---
 name: mockup-from-plan
-description: "One mockup-from-plan iteration: compare an HTML/CSS/JS mockup against a plan document, identify gaps, and fix them."
+description: "This command should be used when the user asks to 'build a mockup from a plan', 'generate mockup from plan', 'create HTML mockup', or 'compare mockup against plan'. Runs one iteration: compares an HTML/CSS/JS mockup against a plan document, identifies gaps, and fixes them."
 argument-hint: "PLAN MOCKUP_DIR"
 ---
 

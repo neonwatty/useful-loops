@@ -1,6 +1,6 @@
 ---
 name: funnel-audit
-description: "One funnel-audit iteration: collaboratively audit one top-of-funnel marketing category with the user, discuss findings, agree on fixes, validate, PR, CI, merge."
+description: "This command should be used when the user asks to 'run a funnel audit', 'audit marketing pages', 'check top-of-funnel', or 'improve marketing conversion'. Runs one interactive iteration: collaboratively audits one top-of-funnel marketing category with the user, discusses findings, agrees on fixes, validates, PRs, runs CI, and merges."
 ---
 
 # Funnel Audit — Full Cycle (Interactive)

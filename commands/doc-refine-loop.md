@@ -1,6 +1,6 @@
 ---
 name: doc-refine-loop
-description: "Loop doc-refine until no further improvements are found. Requires ralph-loop plugin."
+description: "This command should be used when the user asks to 'loop doc refine', 'keep refining a document', or 'iteratively improve documentation'. Loops doc-refine iterations until no further improvements are found. Requires ralph-loop plugin."
 argument-hint: "\"PROMPT\" DOC_FILE [--max N]"
 ---
 
