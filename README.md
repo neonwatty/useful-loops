@@ -49,14 +49,14 @@ claude plugin install ralph-loop
 
 Default max iterations: 10.
 
-### Self-Contained
+### Self-Contained (single iteration, no Ralph Loop dependency)
 
 | Command | Description |
 |---------|-------------|
-| `/useful-loops:plan-refine "<PROMPT>" <PLAN_FILE> [--max N]` | Iteratively refine a plan document using a prompt-driven analysis loop |
-| `/useful-loops:doc-refine "<PROMPT>" <DOC_FILE> [--max N]` | Iteratively refine a document using a prompt-driven analysis loop |
-
-Default max iterations: 5. No Ralph Loop dependency.
+| `/useful-loops:plan-refine "<PROMPT>" <PLAN_FILE>` | Refine a plan document using a prompt-driven analysis |
+| `/useful-loops:doc-refine "<PROMPT>" <DOC_FILE>` | Refine a document using a prompt-driven analysis |
+| `/useful-loops:plan-refine-loop "<PROMPT>" <PLAN_FILE> [--max N]` | Loop plan-refine until no improvements found (requires ralph-loop) |
+| `/useful-loops:doc-refine-loop "<PROMPT>" <DOC_FILE> [--max N]` | Loop doc-refine until no improvements found (requires ralph-loop) |
 
 ## How It Works
 
@@ -278,13 +278,16 @@ Follows the app's existing conventions (framework, CSS approach, data layer) rat
 # Single funnel audit iteration
 /useful-loops:funnel-audit
 
-# Loop funnel audit with max 8 iterations
-/useful-loops:funnel-loop --max 8
+# Run funnel audit interactively (one category at a time)
+/useful-loops:funnel-loop
 
-# Iteratively refine a plan document
-/useful-loops:plan-refine "examine for gaps in error handling" docs/plans/architecture.md --max 3
+# Single plan-refine iteration
+/useful-loops:plan-refine "examine for gaps in error handling" docs/plans/architecture.md
 
-# Iteratively refine a document for clarity
+# Loop plan-refine with max 3 iterations
+/useful-loops:plan-refine-loop "examine for gaps in error handling" docs/plans/architecture.md --max 3
+
+# Single doc-refine iteration
 /useful-loops:doc-refine "improve readability for non-technical audience" docs/user-guide.md
 
 # Align a screen plan against a PRD
