@@ -1,4 +1,5 @@
 ---
+name: service-audit-loop
 description: "Loop service audit until no CRITICAL/HIGH findings remain. Requires ralph-loop plugin."
 argument-hint: "[--max N]"
 ---

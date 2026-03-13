@@ -1,4 +1,5 @@
 ---
+name: gap-loop
 description: "Loop gap analysis until no gaps remain. Requires ralph-loop plugin."
 argument-hint: "REFERENCE_REPO_URL [--max N]"
 ---

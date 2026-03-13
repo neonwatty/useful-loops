@@ -1,4 +1,5 @@
 ---
+name: security-audit
 description: "One security audit iteration: systematically check 1-2 OWASP categories, fix issues, validate, PR, CI, merge."
 ---
 
@@ -71,24 +72,7 @@ For each category:
 
 ## Phase 4: Validate
 
-Run the project's quality checks:
-
-```bash
-npm run lint:fix 2>/dev/null || true
-npm run typecheck 2>/dev/null || true
-npm run test 2>/dev/null || true
-```
-
-Also check for E2E tests that may assert on changed behavior (especially auth flows, headers, redirects). Security fixes are particularly likely to break E2E tests — update stale assertions before pushing.
-
-If any check fails, fix the issue and re-run. Max 3 fix attempts per check. If still failing, revert the problematic change and note it as deferred.
-
-After validation is complete, clean up test artifacts and ensure no test processes are still running:
-
-```bash
-rm -rf coverage .nyc_output 2>/dev/null || true
-pkill -f "vitest|jest" 2>/dev/null || true
-```
+Follow the **Validate** phase in `references/common-lifecycle.md`. Security fixes are particularly likely to break E2E tests — check for stale assertions on auth flows, headers, and redirects.
 
 ## Phase 5: Update Tracking
 
@@ -117,48 +101,17 @@ Append a new entry to `docs/plans/security-audit-tracking.md`:
 
 ## Phase 6: Ship
 
-**If issues were found and fixed:**
-
-1. Stage specific changed files (do NOT use `git add -A` or `git add .`):
-   ```bash
-   git add <list of specific files>
-   ```
-2. Commit:
-   ```bash
-   git commit -m "security: fix findings from security audit iteration N"
-   ```
-3. Push:
-   ```bash
-   git push -u origin security-audit/iteration-<N>
-   ```
-4. Create PR:
-   ```bash
-   gh pr create --title "Security Audit: Iteration N" --body "Automated OWASP security audit. See docs/plans/security-audit-tracking.md for details."
-   ```
+**If issues were found and fixed:** follow the **Ship** phase in `references/common-lifecycle.md` with:
+- **Branch:** `security-audit/iteration-<N>`
+- **Commit:** `security: fix findings from security audit iteration N`
+- **PR title:** `Security Audit: Iteration N`
+- **PR body:** `Automated OWASP security audit. See docs/plans/security-audit-tracking.md for details.`
 
 **If NO issues found AND all 10 categories audited:** skip to Phase 8.
 
 ## Phase 7: CI & Merge
 
-1. Note the PR number from the create output.
-2. Poll CI status every 45 seconds:
-   ```bash
-   gh pr checks <number>
-   ```
-3. Report the status of each check between polls.
-4. When all checks complete:
-   - **All pass** → merge and clean up:
-     ```bash
-     gh pr merge <number> --squash --delete-branch
-     git checkout main && git pull origin main
-     ```
-   - **Any fail** → read logs, fix, push, re-poll (max 3 fix attempts):
-     ```bash
-     gh run view <run-id> --log-failed
-     # fix the issue
-     git add <specific files> && git commit -m "fix: address CI failure in security audit iteration N"
-     git push
-     ```
+Follow the **CI & Merge** phase in `references/common-lifecycle.md`.
 
 ## Phase 8: Signal
 

@@ -1,4 +1,5 @@
 ---
+name: security-loop
 description: "Loop security audit until all OWASP categories clean. Requires ralph-loop plugin."
 argument-hint: "[--max N]"
 ---

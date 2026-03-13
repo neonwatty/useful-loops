@@ -1,4 +1,5 @@
 ---
+name: plan-refine
 description: "One plan-refine iteration: apply a prompt-driven analysis to a plan document, identify improvements, and apply them."
 argument-hint: "\"PROMPT\" PLAN_FILE"
 ---

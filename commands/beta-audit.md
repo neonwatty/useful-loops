@@ -1,4 +1,5 @@
 ---
+name: beta-audit
 description: "One beta-audit iteration: explore the app holistically for beta-readiness gaps, fix code issues, collect manual to-dos, validate, PR, CI, merge."
 ---
 
@@ -127,24 +128,7 @@ Each finding must be classified by:
 
 ## Phase 4: Validate
 
-Run the project's quality checks. Look for scripts in `package.json`, `Makefile`, or CI config:
-
-```bash
-npm run lint:fix 2>/dev/null || true
-npm run typecheck 2>/dev/null || true
-npm run test 2>/dev/null || true
-```
-
-If any check fails, fix the issue and re-run. Max 3 fix attempts per check. If still failing after 3 attempts, revert the problematic change and note it as deferred.
-
-Check E2E tests for stale assertions if content or behavior was changed. Update them accordingly.
-
-After validation is complete, clean up test artifacts and ensure no test processes are still running:
-
-```bash
-rm -rf coverage .nyc_output 2>/dev/null || true
-pkill -f "vitest|jest" 2>/dev/null || true
-```
+Follow the **Validate** phase in `references/common-lifecycle.md`. Check E2E tests for stale assertions if content or behavior was changed.
 
 ## Phase 5: Update Tracking
 
@@ -184,48 +168,17 @@ Do not remove or modify existing entries in the manual to-dos file — the user 
 
 ## Phase 6: Ship
 
-**If code fixes were applied:**
-
-1. Stage specific changed files (do NOT use `git add -A` or `git add .`):
-   ```bash
-   git add <list of specific files>
-   ```
-2. Commit:
-   ```bash
-   git commit -m "fix: beta audit iteration N — <brief summary of changes>"
-   ```
-3. Push:
-   ```bash
-   git push -u origin beta-audit/iteration-<N>
-   ```
-4. Create PR:
-   ```bash
-   gh pr create --title "Beta Audit: Iteration N" --body "Automated beta-readiness audit. See docs/plans/beta-audit-tracking.md for details."
-   ```
+**If code fixes were applied:** follow the **Ship** phase in `references/common-lifecycle.md` with:
+- **Branch:** `beta-audit/iteration-<N>`
+- **Commit:** `fix: beta audit iteration N — <brief summary of changes>`
+- **PR title:** `Beta Audit: Iteration N`
+- **PR body:** `Automated beta-readiness audit. See docs/plans/beta-audit-tracking.md for details.`
 
 **If NO HIGH or MEDIUM code findings were found:** skip to Phase 8.
 
 ## Phase 7: CI & Merge
 
-1. Note the PR number from the create output.
-2. Poll CI status every 45 seconds:
-   ```bash
-   gh pr checks <number>
-   ```
-3. Report the status of each check between polls.
-4. When all checks complete:
-   - **All pass** → merge and clean up:
-     ```bash
-     gh pr merge <number> --squash --delete-branch
-     git checkout main && git pull origin main
-     ```
-   - **Any fail** → read logs, fix, push, re-poll (max 3 fix attempts):
-     ```bash
-     gh run view <run-id> --log-failed
-     # fix the issue
-     git add <specific files> && git commit -m "fix: address CI failure in beta audit iteration N"
-     git push
-     ```
+Follow the **CI & Merge** phase in `references/common-lifecycle.md`.
 
 ## Phase 8: Signal
 

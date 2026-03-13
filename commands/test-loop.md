@@ -1,4 +1,5 @@
 ---
+name: test-loop
 description: "Loop test coverage until 80% threshold met. Requires ralph-loop plugin."
 argument-hint: "[COVERAGE_THRESHOLD] [--max N]"
 ---

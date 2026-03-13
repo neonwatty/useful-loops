@@ -1,4 +1,5 @@
 ---
+name: mockup-from-plan-loop
 description: "Loop mockup-from-plan until the mockup fully matches the plan. Requires ralph-loop plugin."
 argument-hint: "PLAN MOCKUP_DIR [--max N]"
 ---
