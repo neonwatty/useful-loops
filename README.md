@@ -53,9 +53,9 @@ Default max iterations: 10.
 
 | Command | Description |
 |---------|-------------|
-| `/useful-loops:plan-refine "<PROMPT>" <PLAN_FILE>` | Refine a plan document using a prompt-driven analysis |
+| `/useful-loops:plan-refine "<PROMPT>" <PLAN>` | Refine a plan document or directory using a prompt-driven analysis |
 | `/useful-loops:doc-refine "<PROMPT>" <DOC_FILE>` | Refine a document using a prompt-driven analysis |
-| `/useful-loops:plan-refine-loop "<PROMPT>" <PLAN_FILE> [--max N]` | Loop plan-refine until no improvements found (requires ralph-loop) |
+| `/useful-loops:plan-refine-loop "<PROMPT>" <PLAN> [--max N]` | Loop plan-refine until no improvements found (requires ralph-loop) |
 | `/useful-loops:doc-refine-loop "<PROMPT>" <DOC_FILE> [--max N]` | Loop doc-refine until no improvements found (requires ralph-loop) |
 
 ## How It Works
@@ -192,10 +192,11 @@ Each category is checked against a built-in best-practices checklist. Findings a
 
 ### Plan Refine
 
-Iteratively improves a plan document in-place by applying a user-provided analysis prompt. Each iteration reads the plan, identifies improvements (classified HIGH/MEDIUM/LOW), applies all changes directly, and tracks what was changed. Runs as a self-contained loop — no Ralph Loop dependency, no git branching or PRs.
+Iteratively improves a plan document or directory of plan documents in-place by applying a user-provided analysis prompt. Each iteration reads the plan, identifies improvements (classified HIGH/MEDIUM/LOW), applies all changes directly, and tracks what was changed. Runs as a self-contained loop — no Ralph Loop dependency, no git branching or PRs.
 
 - Prompt-driven: analysis focus is entirely controlled by the user's prompt
-- In-place editing: changes the plan file directly, no branches or PRs
+- In-place editing: changes the plan file(s) directly, no branches or PRs
+- File or directory: accepts a single `.md` file or a directory of `.md` files
 - Tracked: maintains iteration log in `docs/plans/plan-refine-tracking.md`
 
 **Completion:** `PLAN_REFINED` when no improvements are found at any severity level.
@@ -281,8 +282,11 @@ Follows the app's existing conventions (framework, CSS approach, data layer) rat
 # Run funnel audit interactively (one category at a time)
 /useful-loops:funnel-loop
 
-# Single plan-refine iteration
+# Single plan-refine iteration (single file)
 /useful-loops:plan-refine "examine for gaps in error handling" docs/plans/architecture.md
+
+# Single plan-refine iteration (directory of plan files)
+/useful-loops:plan-refine "examine for gaps in error handling" docs/plans/architecture/
 
 # Loop plan-refine with max 3 iterations
 /useful-loops:plan-refine-loop "examine for gaps in error handling" docs/plans/architecture.md --max 3
