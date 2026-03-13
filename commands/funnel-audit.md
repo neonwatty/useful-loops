@@ -10,17 +10,12 @@ You are performing one complete funnel-audit iteration **collaboratively with th
 
 ## Phase 1: Setup
 
-1. Compact context to free up space for this iteration:
-   ```
-   /compact
-   ```
-
-2. Ensure you are on main with the latest code:
+1. Ensure you are on main with the latest code:
    ```bash
    git checkout main && git pull origin main
    ```
 
-3. Read `docs/plans/funnel-audit-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it:
+2. Read `docs/plans/funnel-audit-tracking.md` to find the last iteration number. Your iteration is N+1. If no iterations exist yet, you are iteration 1. If the tracking file does not exist, create it:
    ```markdown
    # Funnel Audit Tracking
 
@@ -43,7 +38,7 @@ You are performing one complete funnel-audit iteration **collaboratively with th
    ## Iteration Log
    ```
 
-4. **Ask the user which category to focus on.** Present the tracking status (which categories are done, partial, or not started) and use `AskUserQuestion` to let them choose. Suggest the next unaudited category in order, but let the user override:
+3. **Ask the user which category to focus on.** Present the tracking status (which categories are done, partial, or not started) and use `AskUserQuestion` to let them choose. Suggest the next unaudited category in order, but let the user override:
 
    ```
    AskUserQuestion:
@@ -62,7 +57,7 @@ You are performing one complete funnel-audit iteration **collaboratively with th
 
    Populate the options dynamically based on tracking file status. Always recommend the next unaudited category but respect the user's choice.
 
-5. Create an iteration branch:
+4. Create an iteration branch:
    ```bash
    git checkout -b funnel-audit/iteration-<N>
    ```

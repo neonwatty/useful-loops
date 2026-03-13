@@ -52,7 +52,7 @@ Run Phases 1-6 once. If Phase 3 finds zero gaps, skip to Phase 6 (signal).
    - Note the transformation approach: how does the target translate source concepts into its own domain? (e.g., a PRD's "user profile management" might become specific screens, components, and interactions in a screen plan)
    - If a directory, note the organizational scheme — how are topics split across files? This matters for knowing where to place new content
 
-Both agents should return detailed, structured inventories — not summaries. The gap analysis in Phase 3 depends on having complete information from both sides. If an agent hits context limits, it should use `/compact` to compress prior context and continue working rather than stopping.
+Both agents should return detailed, structured inventories — not summaries. The gap analysis in Phase 3 depends on having complete information from both sides. If an agent hits context limits, it should return its partial inventory and note where it stopped so a follow-up agent can continue.
 
 ## Phase 2: Reconcile Inventories
 

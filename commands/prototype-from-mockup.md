@@ -53,7 +53,7 @@ Run Phases 1-5 once. If Phase 3 finds zero gaps, output the completion promise a
    - Identify the data layer: how data flows (props, context, API routes, server actions, local storage)
    - Report a structured inventory of everything the prototype currently implements
 
-Both agents should return detailed, structured inventories — not summaries. The gap analysis in Phase 3 depends on having complete information from both sides. If an agent hits context limits, it should use `/compact` to compress prior context and continue working rather than stopping.
+Both agents should return detailed, structured inventories — not summaries. The gap analysis in Phase 3 depends on having complete information from both sides. If an agent hits context limits, it should return its partial inventory and note where it stopped so a follow-up agent can continue.
 
 ## Phase 2: Reconcile Inventories
 
