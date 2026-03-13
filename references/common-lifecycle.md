@@ -12,6 +12,8 @@ npm run typecheck 2>/dev/null || true
 npm run test 2>/dev/null || true
 ```
 
+Adapt fixes to this project's conventions (check `CLAUDE.md` if it exists for project-specific guidelines).
+
 Check for E2E tests that may assert on changed behavior or content. Update stale assertions before pushing.
 
 If any check fails, fix the issue and re-run. Max 3 fix attempts per check. If still failing after 3 attempts, revert the problematic change and note it as deferred.

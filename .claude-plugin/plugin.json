@@ -1,6 +1,6 @@
 {
   "name": "useful-loops",
-  "description": "Autonomous iterative codebase improvement skills for gap analysis, test coverage, security audits, beta-readiness audits, and service health audits. Designed to run standalone or in Ralph Loops.",
+  "description": "Autonomous iterative codebase improvement skills for gap analysis, test coverage, security audits, beta-readiness audits, service health audits, funnel audits, plan refinement, document refinement, plan-to-plan alignment, mockup generation, and prototype building. Designed to run standalone or in Ralph Loops.",
   "version": "1.0.0",
   "author": {
     "name": "neonwatty",
@@ -9,5 +9,5 @@
   "repository": "https://github.com/neonwatty/useful-loops",
   "homepage": "https://github.com/neonwatty/useful-loops#readme",
   "license": "MIT",
-  "keywords": ["code-quality", "testing", "security", "auditing", "iterative", "ralph-loop", "beta-readiness", "service-health"]
+  "keywords": ["code-quality", "testing", "security", "auditing", "iterative", "ralph-loop", "beta-readiness", "service-health", "funnel", "planning", "documentation", "mockup", "prototyping"]
 }

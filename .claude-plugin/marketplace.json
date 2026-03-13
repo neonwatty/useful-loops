@@ -1,6 +1,6 @@
 {
   "name": "useful-loops",
-  "description": "Autonomous iterative codebase improvement skills for gap analysis, test coverage, security audits, beta-readiness audits, service health audits, funnel audits, plan refinement, document refinement, mockup generation, and prototype building. Designed to run standalone or in Ralph Loops.",
+  "description": "Autonomous iterative codebase improvement skills for gap analysis, test coverage, security audits, beta-readiness audits, service health audits, funnel audits, plan refinement, document refinement, plan-to-plan alignment, mockup generation, and prototype building. Designed to run standalone or in Ralph Loops.",
   "owner": {
     "name": "neonwatty",
     "github": "neonwatty"
@@ -12,9 +12,9 @@
         "source": "github",
         "repo": "neonwatty/useful-loops"
       },
-      "description": "Autonomous iterative codebase improvement skills for gap analysis, test coverage, security audits, beta-readiness audits, and service health audits. Designed to run standalone or in Ralph Loops.",
+      "description": "Autonomous iterative codebase improvement skills for gap analysis, test coverage, security audits, beta-readiness audits, service health audits, funnel audits, plan refinement, document refinement, plan-to-plan alignment, mockup generation, and prototype building. Designed to run standalone or in Ralph Loops.",
       "version": "1.0.0",
-      "tags": ["code-quality", "testing", "security", "beta-readiness", "service-health"]
+      "tags": ["code-quality", "testing", "security", "beta-readiness", "service-health", "funnel", "planning", "documentation", "mockup", "prototyping"]
     }
   ]
 }
