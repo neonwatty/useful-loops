@@ -1,6 +1,6 @@
 ---
 name: test-loop
-description: "Loop test coverage until 80% threshold met. Requires ralph-loop plugin."
+description: "This command should be used when the user asks to 'loop test coverage', 'keep writing tests until coverage is high', or 'reach 80% test coverage'. Loops test coverage iterations until the threshold is met. Requires ralph-loop plugin."
 argument-hint: "[COVERAGE_THRESHOLD] [--max N]"
 ---
 

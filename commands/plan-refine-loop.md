@@ -1,6 +1,6 @@
 ---
 name: plan-refine-loop
-description: "Loop plan-refine until no further improvements are found. Requires ralph-loop plugin."
+description: "This command should be used when the user asks to 'loop plan refine', 'keep refining a plan', or 'iteratively improve a plan'. Loops plan-refine iterations until no further improvements are found. Requires ralph-loop plugin."
 argument-hint: "\"PROMPT\" PLAN_FILE [--max N]"
 ---
 

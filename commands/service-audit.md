@@ -1,6 +1,6 @@
 ---
 name: service-audit
-description: "One service audit iteration: check Vercel, Supabase, PostHog, Sentry, and GitHub for issues, fix code problems, browser-assist manual fixes, validate, PR, CI, merge."
+description: "This command should be used when the user asks to 'run a service audit', 'check my services', 'audit Vercel/Supabase/PostHog/Sentry/GitHub', or 'check service health'. Runs one iteration: checks Vercel, Supabase, PostHog, Sentry, and GitHub for issues, fixes code problems, browser-assists manual fixes, validates, PRs, runs CI, and merges."
 ---
 
 # Service Audit — Full Cycle
@@ -47,7 +47,7 @@ You are performing one complete service audit iteration. Check the health of all
 
    Build a service manifest listing which services are detected. Only audit detected services. GitHub is always included if a `.git` directory exists.
 
-7. Review prior iterations in the tracking file and manual to-dos. Focus effort on uncovered ground — don't re-discover issues already fixed or already listed as manual to-dos.
+6. Review prior iterations in the tracking file and manual to-dos. Focus effort on uncovered ground — don't re-discover issues already fixed or already listed as manual to-dos.
 
 ## Phase 2: Sweep Services
 

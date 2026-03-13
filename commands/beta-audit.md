@@ -1,6 +1,6 @@
 ---
 name: beta-audit
-description: "One beta-audit iteration: explore the app holistically for beta-readiness gaps, fix code issues, collect manual to-dos, validate, PR, CI, merge."
+description: "This command should be used when the user asks to 'run a beta audit', 'check beta readiness', 'is the app ready for beta', or 'find beta-readiness gaps'. Runs one iteration: explores the app holistically for beta-readiness gaps, fixes code issues, collects manual to-dos, validates, PRs, runs CI, and merges."
 ---
 
 # Beta Audit — Full Cycle

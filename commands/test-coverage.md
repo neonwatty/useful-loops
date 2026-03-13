@@ -1,6 +1,6 @@
 ---
 name: test-coverage
-description: "One test coverage iteration: find untested business logic, write tests, validate, PR, CI, merge. Target: 80% coverage."
+description: "This command should be used when the user asks to 'improve test coverage', 'write more tests', 'find untested code', or 'increase coverage'. Runs one iteration: finds untested business logic, writes tests, validates, PRs, runs CI, and merges. Target: 80% coverage."
 argument-hint: "[COVERAGE_THRESHOLD]"
 ---
 

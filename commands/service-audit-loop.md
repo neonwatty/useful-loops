@@ -1,6 +1,6 @@
 ---
 name: service-audit-loop
-description: "Loop service audit until no CRITICAL/HIGH findings remain. Requires ralph-loop plugin."
+description: "This command should be used when the user asks to 'loop service audit', 'keep auditing services', or 'fix all service issues'. Loops service audit iterations until no CRITICAL/HIGH findings remain. Requires ralph-loop plugin."
 argument-hint: "[--max N]"
 ---
 

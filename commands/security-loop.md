@@ -1,6 +1,6 @@
 ---
 name: security-loop
-description: "Loop security audit until all OWASP categories clean. Requires ralph-loop plugin."
+description: "This command should be used when the user asks to 'loop security audit', 'audit all OWASP categories', or 'do a full security sweep'. Loops security audit iterations until all OWASP categories are clean. Requires ralph-loop plugin."
 argument-hint: "[--max N]"
 ---
 
