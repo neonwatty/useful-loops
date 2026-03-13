@@ -1,4 +1,5 @@
 ---
+name: funnel-loop
 description: "Run the next funnel-audit iteration interactively. Unlike other sweeps, funnel audits require human judgment for marketing decisions."
 argument-hint: ""
 ---

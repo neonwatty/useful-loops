@@ -1,4 +1,5 @@
 ---
+name: test-coverage
 description: "One test coverage iteration: find untested business logic, write tests, validate, PR, CI, merge. Target: 80% coverage."
 argument-hint: "[COVERAGE_THRESHOLD]"
 ---
@@ -78,32 +79,14 @@ For each selected file, write a test file following existing project test patter
 
 ## Phase 4: Validate
 
-Run the project's quality checks:
+Follow the **Validate** phase in `references/common-lifecycle.md`. Additional steps for this skill:
 
-```bash
-npm run lint:fix 2>/dev/null || true
-npm run typecheck 2>/dev/null || true
-npm run test 2>/dev/null || true
-```
-
-If any source files were modified (not just test files added), check for E2E tests that may assert on changed behavior and update stale assertions.
-
-Then check coverage (try common commands):
-
-```bash
-npm run test:coverage 2>/dev/null || npx vitest run --coverage 2>/dev/null || npx jest --coverage 2>/dev/null || true
-```
-
-Parse the coverage summary output for the "All files" line. Record the four metrics: lines, branches, functions, statements.
-
-If any check fails, fix the issue and re-run. Max 3 fix attempts per check. If still failing, revert the problematic test file and note it as deferred.
-
-After validation is complete, clean up test artifacts and ensure no test processes are still running:
-
-```bash
-rm -rf coverage .nyc_output 2>/dev/null || true
-pkill -f "vitest|jest" 2>/dev/null || true
-```
+- If source files were modified (not just test files added), check E2E tests for stale assertions.
+- After the standard checks, also run coverage:
+  ```bash
+  npm run test:coverage 2>/dev/null || npx vitest run --coverage 2>/dev/null || npx jest --coverage 2>/dev/null || true
+  ```
+- Parse the coverage summary output for the "All files" line. Record the four metrics: lines, branches, functions, statements.
 
 ## Phase 5: Update Tracking
 
@@ -127,48 +110,17 @@ Append a new entry to `docs/plans/test-coverage-tracking.md`:
 
 ## Phase 6: Ship
 
-**If tests were written:**
-
-1. Stage specific changed files (do NOT use `git add -A` or `git add .`):
-   ```bash
-   git add <list of specific test files and any modified source files>
-   ```
-2. Commit:
-   ```bash
-   git commit -m "test: add tests from test coverage iteration N"
-   ```
-3. Push:
-   ```bash
-   git push -u origin test-coverage/iteration-<N>
-   ```
-4. Create PR:
-   ```bash
-   gh pr create --title "Test Coverage: Iteration N" --body "Automated test coverage improvement. See docs/plans/test-coverage-tracking.md for details."
-   ```
+**If tests were written:** follow the **Ship** phase in `references/common-lifecycle.md` with:
+- **Branch:** `test-coverage/iteration-<N>`
+- **Commit:** `test: add tests from test coverage iteration N`
+- **PR title:** `Test Coverage: Iteration N`
+- **PR body:** `Automated test coverage improvement. See docs/plans/test-coverage-tracking.md for details.`
 
 **If NO untested P0-P5 files remain AND coverage >= threshold:** skip to Phase 8.
 
 ## Phase 7: CI & Merge
 
-1. Note the PR number from the create output.
-2. Poll CI status every 45 seconds:
-   ```bash
-   gh pr checks <number>
-   ```
-3. Report the status of each check between polls.
-4. When all checks complete:
-   - **All pass** → merge and clean up:
-     ```bash
-     gh pr merge <number> --squash --delete-branch
-     git checkout main && git pull origin main
-     ```
-   - **Any fail** → read logs, fix, push, re-poll (max 3 fix attempts):
-     ```bash
-     gh run view <run-id> --log-failed
-     # fix the issue
-     git add <specific files> && git commit -m "fix: address CI failure in test coverage iteration N"
-     git push
-     ```
+Follow the **CI & Merge** phase in `references/common-lifecycle.md`.
 
 ## Phase 8: Signal
 

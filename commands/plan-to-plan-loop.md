@@ -1,4 +1,5 @@
 ---
+name: plan-to-plan-loop
 description: "Loop plan-to-plan until the target plan fully covers the source plan. Requires ralph-loop plugin."
 argument-hint: "SOURCE_PLAN TARGET [--max N]"
 ---

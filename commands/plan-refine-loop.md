@@ -1,4 +1,5 @@
 ---
+name: plan-refine-loop
 description: "Loop plan-refine until no further improvements are found. Requires ralph-loop plugin."
 argument-hint: "\"PROMPT\" PLAN_FILE [--max N]"
 ---

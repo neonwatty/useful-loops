@@ -1,4 +1,5 @@
 ---
+name: prototype-from-mockup-loop
 description: "Loop prototype-from-mockup until the prototype fully matches the mockup. Requires ralph-loop plugin."
 argument-hint: "MOCKUP_DIR APP_DIR [--max N]"
 ---

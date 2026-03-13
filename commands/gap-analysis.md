@@ -1,4 +1,5 @@
 ---
+name: gap-analysis
 description: "One gap analysis iteration: compare this app against a reference app, fix gaps, validate, PR, CI, merge."
 argument-hint: "REFERENCE_REPO_URL"
 ---
@@ -75,24 +76,7 @@ Tell explorer agents about these exclusions upfront so they don't waste time rep
 
 ## Phase 4: Validate
 
-Run the project's quality checks. Look for scripts in `package.json`, `Makefile`, or CI config:
-
-```bash
-npm run lint:fix 2>/dev/null || true
-npm run typecheck 2>/dev/null || true
-npm run test 2>/dev/null || true
-```
-
-Also check for E2E tests that may assert on changed content (search E2E test files for old text you replaced). Update any stale assertions before pushing.
-
-If any check fails, fix the issue and re-run. Max 3 fix attempts per check. If still failing after 3 attempts, revert the problematic change and note it as deferred.
-
-After validation is complete, clean up test artifacts and ensure no test processes are still running:
-
-```bash
-rm -rf coverage .nyc_output 2>/dev/null || true
-pkill -f "vitest|jest" 2>/dev/null || true
-```
+Follow the **Validate** phase in `references/common-lifecycle.md`. Also search E2E test files for old text that was replaced and update stale assertions.
 
 ## Phase 5: Update Tracking
 
@@ -121,48 +105,17 @@ Append a new entry to `docs/plans/gap-tracking.md`:
 
 ## Phase 6: Ship
 
-**If gaps were found and fixed:**
-
-1. Stage specific changed files (do NOT use `git add -A` or `git add .`):
-   ```bash
-   git add <list of specific files>
-   ```
-2. Commit:
-   ```bash
-   git commit -m "fix: close gaps from gap analysis iteration N"
-   ```
-3. Push:
-   ```bash
-   git push -u origin gap-analysis/iteration-<N>
-   ```
-4. Create PR:
-   ```bash
-   gh pr create --title "Gap Analysis: Iteration N" --body "Automated gap analysis. See docs/plans/gap-tracking.md for details."
-   ```
+**If gaps were found and fixed:** follow the **Ship** phase in `references/common-lifecycle.md` with:
+- **Branch:** `gap-analysis/iteration-<N>`
+- **Commit:** `fix: close gaps from gap analysis iteration N`
+- **PR title:** `Gap Analysis: Iteration N`
+- **PR body:** `Automated gap analysis. See docs/plans/gap-tracking.md for details.`
 
 **If NO gaps were found across all six dimensions:** skip to Phase 8.
 
 ## Phase 7: CI & Merge
 
-1. Note the PR number from the create output.
-2. Poll CI status every 45 seconds:
-   ```bash
-   gh pr checks <number>
-   ```
-3. Report the status of each check between polls.
-4. When all checks complete:
-   - **All pass** → merge and clean up:
-     ```bash
-     gh pr merge <number> --squash --delete-branch
-     git checkout main && git pull origin main
-     ```
-   - **Any fail** → read logs, fix, push, re-poll (max 3 fix attempts):
-     ```bash
-     gh run view <run-id> --log-failed
-     # fix the issue
-     git add <specific files> && git commit -m "fix: address CI failure in gap analysis iteration N"
-     git push
-     ```
+Follow the **CI & Merge** phase in `references/common-lifecycle.md`.
 
 ## Phase 8: Signal
 

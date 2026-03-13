@@ -1,4 +1,5 @@
 ---
+name: doc-refine
 description: "One doc-refine iteration: apply a prompt-driven analysis to a document, identify improvements, and apply them."
 argument-hint: "\"PROMPT\" DOC_FILE"
 ---

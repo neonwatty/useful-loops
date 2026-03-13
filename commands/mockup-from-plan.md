@@ -1,4 +1,5 @@
 ---
+name: mockup-from-plan
 description: "One mockup-from-plan iteration: compare an HTML/CSS/JS mockup against a plan document, identify gaps, and fix them."
 argument-hint: "PLAN MOCKUP_DIR"
 ---

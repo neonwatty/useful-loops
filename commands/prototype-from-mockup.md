@@ -1,4 +1,5 @@
 ---
+name: prototype-from-mockup
 description: "One prototype-from-mockup iteration: compare a real app prototype against an HTML/CSS/JS mockup, identify gaps, and fix them."
 argument-hint: "MOCKUP_DIR APP_DIR"
 ---

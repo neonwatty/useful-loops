@@ -1,4 +1,5 @@
 ---
+name: plan-to-plan
 description: "One plan-to-plan iteration: compare a derived plan against its source plan, identify gaps, and fix them."
 argument-hint: "SOURCE_PLAN TARGET"
 ---
